@@ -4,7 +4,7 @@
   <link rel="icon" type="image/svg+xml" href="SKY Studio.svg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SKY Studio — 下一代开发与应用生态</title>
+  <title>SKY Studio — 愿此行，终抵群星</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -28,112 +28,298 @@
     }
   </script>
 
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .content-auto { content-visibility: auto; }
-      .nav-item {
-        @apply relative px-4 py-2 text-gray-700 hover:text-sky-darker transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-sky-darker after:transition-all after:duration-300 hover:after:w-full;
-      }
-    }
-  </style>
-
   <style>
+    :root {
+      --header-h: 84px;
+      --page-bg: #F0F5FF;
+      --brand: #1E5BFF;
+      --brand-mid: #3B7BFF;
+      --brand-light: #84A9FF;
+    }
+
+    * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      background-color: #F0F5FF;
-      background-image:
-        radial-gradient(at 40% 20%, rgba(132, 169, 255, 0.1) 0px, transparent 50%),
-        radial-gradient(at 80% 0%, rgba(59, 123, 255, 0.1) 0px, transparent 50%),
-        radial-gradient(at 0% 50%, rgba(30, 91, 255, 0.1) 0px, transparent 50%);
-      background-attachment: fixed;
+      margin: 0;
+      background-color: var(--page-bg);
+      background-image: none;
+      color: #1F2937;
+      overflow-x: hidden;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* ================= 满屏区块 ================= */
+    .screen {
+      box-sizing: border-box;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--header-h) + 1rem) 1.25rem 2.75rem;
+      position: relative;
+      background: transparent;
+    }
+    .screen-inner { width: 100%; max-width: 68rem; margin: 0 auto; }
+
+    /* ================= 导航 ================= */
+    .nav-item {
+      position: relative;
+      padding: .5rem 1rem;
+      color: #374151;
+      font-weight: 500;
+      transition: color .2s ease;
+    }
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      left: 1rem; right: 1rem; bottom: 0;
+      height: 2px;
+      background: var(--brand);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
+    }
+    .nav-item:hover { color: var(--brand); }
+    .nav-item:hover::after { transform: scaleX(1); }
+
+    /* ================= Hero 标语 ================= */
+    /* 工作室名称标识：唯一一处品牌文字，层级高于标语之下的所有副信息 */
+    .brand-mark {
+      margin: 0 0 clamp(.9rem, 2vh, 1.45rem);
+      padding-left: .18em;
+      font-size: clamp(1rem, 2.1vw, 1.5rem);
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      line-height: 1.2;
+      color: #14305C;
     }
 
-    .animate-fadeUp { animation: fadeUp 0.7s ease-out both; }
-    .animate-fadeUp-1 { animation-delay: 0.1s; }
-    .animate-fadeUp-2 { animation-delay: 0.2s; }
-    .animate-fadeUp-3 { animation-delay: 0.35s; }
-
-    /* ===== 统一卡片悬浮 + 发光 ===== */
-    .card-hover {
-      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* 主标语：Linear 式极简——深墨蓝到品牌蓝的低对比线性渐变，收紧字距 */
+    .slogan {
+      margin: 0;
+      padding: 0;
+      font-size: clamp(2.4rem, 7.4vw, 6rem);
+      line-height: 1.12;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+      background: linear-gradient(180deg, #1E5BFF 0%, #2C63C8 55%, #3B7BFF 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      filter: drop-shadow(0 8px 24px rgba(30,91,255,.08));
+      animation: sloganIn 1.1s cubic-bezier(.22,.61,.36,1) both;
     }
+    @keyframes sloganIn {
+      from { opacity: 0; transform: translateY(28px) scale(.965); letter-spacing: .2em; }
+      to   { opacity: 1; transform: translateY(0) scale(1); letter-spacing: -0.03em; }
+    }
+    /* 描边层专用：与底层同步位移与字距，但不触碰 opacity（避免覆盖 hover 显隐） */
+    @keyframes sloganEdgeIn {
+      from { transform: translateY(28px) scale(.965); letter-spacing: .2em; }
+      to   { transform: translateY(0) scale(1); letter-spacing: -0.03em; }
+    }
+
+    /* ===== 标语舞台（承载光晕与高亮层） ===== */
+    .slogan-stage {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+    }
+    .slogan-stage .slogan-base { position: relative; z-index: 1; }
+
+    /* 常驻极淡描边层：让文字轮廓始终有一层极淡包边 */
+    .slogan.slogan-edge-base {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: block;
+      pointer-events: none;
+      margin: 0;
+      background: none;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: 1.2px rgba(59, 123, 255, .36);
+      opacity: 1;
+      filter: none;
+      animation: sloganEdgeIn 1.1s cubic-bezier(.22,.61,.36,1) both;
+    }
+
+    /* 跟随高光描边层：仅点亮光标附近那段外圈描边（不产生内部填充光） */
+    .slogan.slogan-edge {
+      position: absolute;
+      /* 负偏移 + 等量 padding：内容盒与底层文字完全重合，
+         但元素边界向外扩出光晕所需空间，避免 filter 绘制区域把描边与光裁掉 */
+      inset: -30px;
+      padding: 30px;
+      z-index: 3;
+      display: block;
+      pointer-events: none;
+      margin: 0;
+      background: none;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: 4.2px #B4D6FF;
+      /* 由内向外四段递减：贴边锐利 → 近距柔光 → 中距扩散 → 远距余晖 */
+      filter: drop-shadow(0 0 0.6px rgba(236, 246, 255, 1))
+              drop-shadow(0 0 3px rgba(178, 214, 255, .95))
+              drop-shadow(0 0 8px rgba(130, 184, 255, .58))
+              drop-shadow(0 0 15px rgba(100, 158, 255, .3));
+      opacity: 1;
+      -webkit-mask-image: radial-gradient(
+        circle clamp(70px, 8vw, 132px) at var(--mx, -999px) var(--my, -999px),
+        #000 0%,
+        rgba(0, 0, 0, .85) 38%,
+        rgba(0, 0, 0, .35) 66%,
+        transparent 86%
+      );
+      mask-image: radial-gradient(
+        circle clamp(70px, 8vw, 132px) at var(--mx, -999px) var(--my, -999px),
+        #000 0%,
+        rgba(0, 0, 0, .85) 38%,
+        rgba(0, 0, 0, .35) 66%,
+        transparent 86%
+      );
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .slogan.slogan-edge { opacity: 0; }
+    }
+
+    /* Linear 风格层次：标语下方仅一条 1px 极淡实线 */
+    .slogan-hairline {
+      width: clamp(160px, 24vw, 380px);
+      height: 1px;
+      border: 0;
+      margin: 1.45rem auto 1.6rem;
+      background: rgba(16, 32, 58, .12);
+    }
+
+    .hero-sub {
+      font-size: clamp(.9rem, 1.45vw, 1.1rem);
+      color: #64748B;
+      letter-spacing: .02em;
+      margin: 0 0 .55rem;
+      font-weight: 500;
+    }
+    .hero-desc {
+      font-size: clamp(.8rem, 1.05vw, .93rem);
+      color: #94A3B8;
+      max-width: 34rem;
+      margin: 0 auto clamp(1.2rem, 2.6vh, 2rem);
+      line-height: 1.75;
+    }
+
+    /* ================= 通用区块标题 ================= */
+    .section-eyebrow {
+      font-size: clamp(.66rem, .95vw, .8rem);
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: var(--brand);
+      font-weight: 700;
+      margin: 0 0 .7rem;
+    }
+    .section-title {
+      font-size: clamp(1.4rem, 3vw, 2.35rem);
+      font-weight: 800;
+      color: #111827;
+      line-height: 1.25;
+      margin: 0 0 .65rem;
+    }
+    .section-sub {
+      font-size: clamp(.82rem, 1.1vw, .98rem);
+      color: #94A3B8;
+      margin: 0 0 clamp(1.4rem, 3vh, 2.4rem);
+    }
+
+    /* ================= 卡片 ================= */
+    .card-hover { transition: all .35s cubic-bezier(.25,.46,.45,.94); }
     .card-hover:hover {
       transform: translateY(-6px);
-      box-shadow: 0 16px 48px rgba(30, 91, 255, 0.18), 0 4px 12px rgba(30, 91, 255, 0.08);
+      box-shadow: 0 16px 48px rgba(30,91,255,.16), 0 4px 12px rgba(30,91,255,.08);
     }
 
-    /* ===== 按钮发光 ===== */
-    .btn-glow {
-      transition: all 0.3s ease;
-    }
-    .btn-glow:hover {
-      box-shadow: 0 8px 32px rgba(30, 91, 255, 0.35), 0 2px 8px rgba(30, 91, 255, 0.2);
-    }
-
-    /* 边框按钮发光（较淡） */
-    .btn-glow-outline {
-      transition: all 0.3s ease;
-    }
-    .btn-glow-outline:hover {
-      box-shadow: 0 6px 24px rgba(30, 91, 255, 0.15), 0 1px 4px rgba(30, 91, 255, 0.1);
+    .feature-card {
+      padding: clamp(1.1rem, 2.6vh, 2rem) clamp(1rem, 1.6vw, 1.75rem);
+      border-radius: 1rem;
+      background: rgba(230,238,255,.55);
+      text-align: center;
     }
 
-    /* 浅色背景下按钮发光 */
-    .btn-glow-light {
-      transition: all 0.3s ease;
-    }
-    .btn-glow-light:hover {
-      box-shadow: 0 8px 28px rgba(30, 91, 255, 0.25), 0 2px 6px rgba(30, 91, 255, 0.12);
-    }
+    .btn-glow { transition: all .3s ease; }
+    .btn-glow:hover { box-shadow: 0 8px 32px rgba(30,91,255,.35), 0 2px 8px rgba(30,91,255,.2); }
 
-    /* 截图占位区 */
-    .screenshot-placeholder {
-      background: linear-gradient(135deg, #E6EEFF 0%, #F0F5FF 100%);
+    .btn-glow-outline { transition: all .3s ease; }
+    .btn-glow-outline:hover { box-shadow: 0 6px 24px rgba(30,91,255,.15), 0 1px 4px rgba(30,91,255,.1); }
+
+    /* ================= 截图占位 ================= */
+    .shot {
+      aspect-ratio: 16 / 10;
+      max-height: 25vh;
       border: 2px dashed #C7D2FE;
       border-radius: 16px;
-      aspect-ratio: 16/10;
+      background: linear-gradient(135deg, #E9EFFF 0%, #F5F8FF 100%);
       display: flex; align-items: center; justify-content: center;
       color: #94A3B8;
-      font-size: 0.875rem;
-      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      font-size: .85rem;
+      transition: all .35s cubic-bezier(.25,.46,.45,.94);
+      margin-bottom: clamp(.8rem, 1.6vh, 1.15rem);
     }
-    .screenshot-placeholder:hover {
-      border-color: #84A9FF;
-      color: #3B7BFF;
-      background: linear-gradient(135deg, #DBE4FF 0%, #E6EEFF 100%);
+    .shot:hover {
+      border-color: var(--brand-light);
+      color: var(--brand-mid);
       transform: translateY(-4px);
-      box-shadow: 0 12px 36px rgba(30, 91, 255, 0.12);
+      box-shadow: 0 12px 36px rgba(30,91,255,.12);
+    }
+
+    /* ================= 页脚 ================= */
+    .footer-link { color: #6B7280; transition: color .2s ease; }
+    .footer-link:hover { color: var(--brand); }
+
+    /* ================= 小屏适配 ================= */
+    @media (max-width: 900px), (max-height: 680px) {
+      :root { --header-h: 72px; }
+      .screen { padding: calc(var(--header-h) + .75rem) 1rem 2rem; }
+      .slogan { font-size: clamp(2rem, 9.5vw, 3.4rem); letter-spacing: -0.02em; }
+      @keyframes sloganIn {
+        from { opacity: 0; transform: translateY(28px) scale(.965); letter-spacing: .2em; }
+        to   { opacity: 1; transform: translateY(0) scale(1); letter-spacing: -0.02em; }
+      }
+      @keyframes sloganEdgeIn {
+        from { transform: translateY(28px) scale(.965); letter-spacing: .2em; }
+        to   { transform: translateY(0) scale(1); letter-spacing: -0.02em; }
+      }
+      .shot { max-height: none; }
     }
   </style>
 </head>
 
-<body class="font-sans text-gray-800 min-h-screen">
+<body class="font-sans">
 
   <!-- ==================== 导航栏 ==================== -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm transition-all duration-300">
-    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-      <nav class="hidden md:flex items-center space-x-2">
-        <a href="#hero" class="nav-item font-medium">首页</a>
-        <a href="#features" class="nav-item font-medium">特性</a>
-        <a href="#products" class="nav-item font-medium">产品</a>
+  <header id="siteHeader" class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm transition-shadow duration-300">
+    <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+      <nav class="hidden md:flex items-center">
+        <a href="#hero" class="nav-item">首页</a>
+        <a href="#features" class="nav-item">特性</a>
+        <a href="#products" class="nav-item">产品</a>
       </nav>
 
-      <div class="flex items-center">
-        <div class="w-12 h-12 rounded-full">
-          <div class="w-15 h-15 relative">
-            <img src="SKY Studio.svg" alt="LOGO">
-          </div>
-        </div>
-      </div>
+      <a href="#hero" class="flex items-center justify-center">
+        <img src="SKY Studio.svg" alt="SKY Studio" class="w-12 h-12">
+      </a>
 
-      <nav class="hidden md:flex items-center space-x-2">
-        <a href="#tools" class="nav-item font-medium">工具</a>
-        <a href="download.html" class="nav-item font-medium">下载</a>
-        <a href="repos.html" class="nav-item font-medium">仓库</a>
+      <nav class="hidden md:flex items-center">
+        <a href="#tools" class="nav-item">工具</a>
+        <a href="download.html" class="nav-item">下载</a>
+        <a href="repos.html" class="nav-item">仓库</a>
       </nav>
 
       <button id="menuBtn" class="md:hidden text-gray-700 focus:outline-none">
@@ -142,7 +328,7 @@
     </div>
 
     <div id="mobileMenu" class="md:hidden hidden bg-white border-t border-gray-100">
-      <div class="container mx-auto px-4 py-2 flex flex-col space-y-1">
+      <div class="mx-auto max-w-6xl px-4 py-2 flex flex-col">
         <a href="#hero" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">首页</a>
         <a href="#features" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">特性</a>
         <a href="#products" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">产品</a>
@@ -154,117 +340,113 @@
   </header>
 
   <main>
-    <!-- ==================== Hero 大标题区 ==================== -->
-    <section id="hero" class="py-16 md:py-28">
-      <div class="container mx-auto px-4 text-center">
-        <div class="animate-fadeUp mb-16">
-          <p class="text-sky-darker text-sm font-semibold tracking-widest uppercase mb-4">SKY Studio · Developer Suite v2.5.2</p>
-          <h1 class="text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold text-gray-900 mb-5 leading-[1.08] tracking-tight">
-            SKY Studio
-          </h1>
-          <p class="text-lg md:text-xl text-gray-500 mb-2 max-w-xl mx-auto">
-            Build the Future of Development &amp; Application Ecosystem
-          </p>
-          <p class="text-base text-gray-400 max-w-lg mx-auto mb-10">
-            创新的操作系统、强大的编程语言和高效的解释器，为开发者与用户带来无缝衔接的卓越体验。
-          </p>
+    <!-- ==================== Hero 标语区 ==================== -->
+    <section id="hero" class="screen">
+      <div class="screen-inner text-center">
+        <p class="brand-mark">SKY Studio</p>
 
-          <!-- CTA 按钮 -->
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-            <a href="https://1814163603.share.123pan.cn/123pan/fedbVv-HYR5" class="btn-glow px-8 py-3.5 bg-sky-darker hover:bg-sky-darker/90 text-white rounded-xl font-semibold text-base inline-flex items-center gap-2">
-              <i class="fa fa-download"></i> 立即下载 Download
-            </a>
-            <a href="#" class="btn-glow-outline px-8 py-3.5 border-2 border-sky-darker/20 text-sky-darker hover:border-sky-darker hover:bg-sky-light/50 rounded-xl font-semibold text-base inline-flex items-center gap-2">
-              <i class="fa fa-cloud"></i> 在线体验 Online
-            </a>
+        <div class="slogan-stage" id="sloganStage">
+          <h1 class="slogan slogan-base">愿此行，终抵群星</h1>
+          <span class="slogan slogan-edge-base" aria-hidden="true">愿此行，终抵群星</span>
+          <span class="slogan slogan-edge" aria-hidden="true">愿此行，终抵群星</span>
+        </div>
+
+        <hr class="slogan-hairline">
+
+        <p class="hero-sub">Build the Future of Development &amp; Application Ecosystem</p>
+        <p class="hero-desc">创新的操作系统、强大的编程语言和高效的解释器，为开发者与用户带来无缝衔接的卓越体验。</p>
+
+        <!-- CTA 按钮 -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+          <a href="https://1814163603.share.123pan.cn/123pan/fedbVv-HYR5" class="btn-glow px-8 py-3.5 bg-sky-darker hover:bg-sky-darker/90 text-white rounded-xl font-semibold text-base inline-flex items-center gap-2">
+            <i class="fa fa-download"></i> 立即下载 Download
+          </a>
+          <a href="#" class="btn-glow-outline px-8 py-3.5 border-2 border-sky-darker/20 text-sky-darker hover:border-sky-darker hover:bg-sky-light/50 rounded-xl font-semibold text-base inline-flex items-center gap-2 bg-white/40">
+            <i class="fa fa-cloud"></i> 在线体验 Online
+          </a>
+        </div>
+
+        <!-- 三产品概览小卡片 -->
+        <div class="grid grid-cols-3 gap-4 max-w-lg mx-auto">
+          <div class="card-hover bg-white/80 backdrop-blur rounded-xl p-4 shadow-sm">
+            <i class="fa fa-desktop text-sky-darker text-xl mb-1.5"></i>
+            <div class="font-semibold text-sm text-gray-800">SKY OS/UI</div>
+            <div class="text-xs text-gray-400">操作系统</div>
           </div>
-
-          <!-- 三产品概览小卡片 -->
-          <div class="grid grid-cols-3 gap-4 max-w-lg mx-auto">
-            <div class="card-hover bg-white/80 backdrop-blur rounded-xl p-4 shadow-sm">
-              <i class="fa fa-desktop text-sky-darker text-xl mb-1.5"></i>
-              <div class="font-semibold text-sm text-gray-800">SKY OS/UI</div>
-              <div class="text-xs text-gray-400">操作系统</div>
-            </div>
-            <div class="card-hover bg-white/80 backdrop-blur rounded-xl p-4 shadow-sm">
-              <i class="fa fa-cogs text-sky-darker text-xl mb-1.5"></i>
-              <div class="font-semibold text-sm text-gray-800">SKY Editor</div>
-              <div class="text-xs text-gray-400">解释器</div>
-            </div>
-            <div class="card-hover bg-white/80 backdrop-blur rounded-xl p-4 shadow-sm">
-              <i class="fa fa-code text-sky-darker text-xl mb-1.5"></i>
-              <div class="font-semibold text-sm text-gray-800">SKY Code</div>
-              <div class="text-xs text-gray-400">编程语言</div>
-            </div>
+          <div class="card-hover bg-white/80 backdrop-blur rounded-xl p-4 shadow-sm">
+            <i class="fa fa-cogs text-sky-darker text-xl mb-1.5"></i>
+            <div class="font-semibold text-sm text-gray-800">SKY Editor</div>
+            <div class="text-xs text-gray-400">解释器</div>
+          </div>
+          <div class="card-hover bg-white/80 backdrop-blur rounded-xl p-4 shadow-sm">
+            <i class="fa fa-code text-sky-darker text-xl mb-1.5"></i>
+            <div class="font-semibold text-sm text-gray-800">SKY Code</div>
+            <div class="text-xs text-gray-400">编程语言</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ==================== Why SKY Studio 特性区 ==================== -->
-    <section id="features" class="py-16 md:py-24 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-5xl mx-auto text-center mb-14">
-          <p class="text-sky-darker text-sm font-semibold tracking-widest uppercase mb-3">Why SKY Studio</p>
-          <h2 class="text-[clamp(1.6rem,3vw,2.5rem)] font-bold text-gray-900 mb-4">
-            为开发者而生，<span class="text-sky-darker">为性能而建</span>
-          </h2>
-          <p class="text-gray-400 text-lg">Built for Developers, Engineered for Performance</p>
+    <section id="features" class="screen">
+      <div class="screen-inner">
+        <div class="text-center">
+          <p class="section-eyebrow">Why SKY Studio</p>
+          <h2 class="section-title">为开发者而生，<span class="text-sky-darker">为性能而建</span></h2>
+          <p class="section-sub">Built for Developers, Engineered for Performance</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
           <!-- 特性1 -->
-          <div class="card-hover p-8 rounded-2xl bg-sky-light/40 text-center">
-            <div class="w-14 h-14 mx-auto mb-5 rounded-xl bg-sky-darker/10 flex items-center justify-center">
+          <div class="card-hover feature-card">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-sky-darker/10 flex items-center justify-center">
               <i class="fa fa-bolt text-sky-darker text-2xl"></i>
             </div>
-            <h3 class="text-xl font-semibold mb-2 text-gray-800">极限性能</h3>
-            <p class="text-gray-400 text-sm mb-3">Extreme Performance</p>
-            <p class="text-gray-600 leading-relaxed">优化的底层架构与高效内存管理，SKY Editor 以毫秒级响应运行应用。轻量设计，低配设备也能流畅运转。</p>
+            <h3 class="text-lg font-semibold mb-1.5 text-gray-800">极限性能</h3>
+            <p class="text-gray-400 text-xs mb-2.5 tracking-wide">Extreme Performance</p>
+            <p class="text-gray-600 text-sm leading-relaxed">优化的底层架构与高效内存管理，SKY Editor 以毫秒级响应运行应用。轻量设计，低配设备也能流畅运转。</p>
           </div>
 
           <!-- 特性2 -->
-          <div class="card-hover p-8 rounded-2xl bg-sky-light/40 text-center">
-            <div class="w-14 h-14 mx-auto mb-5 rounded-xl bg-sky-darker/10 flex items-center justify-center">
+          <div class="card-hover feature-card">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-sky-darker/10 flex items-center justify-center">
               <i class="fa fa-puzzle-piece text-sky-darker text-2xl"></i>
             </div>
-            <h3 class="text-xl font-semibold mb-2 text-gray-800">丰富扩展</h3>
-            <p class="text-gray-400 text-sm mb-3">Rich Extensibility</p>
-            <p class="text-gray-600 leading-relaxed">SKY Code 提供类 Python 的简洁语法与强大标准库，支持模块化开发。丰富 API 让功能扩展轻而易举。</p>
+            <h3 class="text-lg font-semibold mb-1.5 text-gray-800">丰富扩展</h3>
+            <p class="text-gray-400 text-xs mb-2.5 tracking-wide">Rich Extensibility</p>
+            <p class="text-gray-600 text-sm leading-relaxed">SKY Code 提供类 Python 的简洁语法与强大标准库，支持模块化开发。丰富 API 让功能扩展轻而易举。</p>
           </div>
 
           <!-- 特性3 -->
-          <div class="card-hover p-8 rounded-2xl bg-sky-light/40 text-center">
-            <div class="w-14 h-14 mx-auto mb-5 rounded-xl bg-sky-darker/10 flex items-center justify-center">
+          <div class="card-hover feature-card">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-sky-darker/10 flex items-center justify-center">
               <i class="fa fa-cubes text-sky-darker text-2xl"></i>
             </div>
-            <h3 class="text-xl font-semibold mb-2 text-gray-800">功能集成</h3>
-            <p class="text-gray-400 text-sm mb-3">Integrated Ecosystem</p>
-            <p class="text-gray-600 leading-relaxed">从编写代码到运行应用，SKY OS/UI 提供一体化桌面环境。开发者套件一站式集成开发、调试、部署全流程。</p>
+            <h3 class="text-lg font-semibold mb-1.5 text-gray-800">功能集成</h3>
+            <p class="text-gray-400 text-xs mb-2.5 tracking-wide">Integrated Ecosystem</p>
+            <p class="text-gray-600 text-sm leading-relaxed">从编写代码到运行应用，SKY OS/UI 提供一体化桌面环境。开发者套件一站式集成开发、调试、部署全流程。</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ==================== 产品展示截图区 ==================== -->
-    <section id="products" class="py-16 md:py-24">
-      <div class="container mx-auto px-4">
-        <div class="max-w-5xl mx-auto text-center mb-14">
-          <p class="text-sky-darker text-sm font-semibold tracking-widest uppercase mb-3">Products</p>
-          <h2 class="text-[clamp(1.6rem,3vw,2.5rem)] font-bold text-gray-900 mb-4">三大核心产品</h2>
-          <p class="text-gray-400 text-lg">Three Core Products, One Unified Vision</p>
+    <section id="products" class="screen">
+      <div class="screen-inner">
+        <div class="text-center">
+          <p class="section-eyebrow">Products</p>
+          <h2 class="section-title">三大核心产品</h2>
+          <p class="section-sub">Three Core Products, One Unified Vision</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           <!-- SKY OS/UI -->
           <div>
-            <div class="screenshot-placeholder mb-5">
-              SKY OS/UI — Screenshot
-            </div>
+            <div class="shot">SKY OS/UI — Screenshot</div>
             <div class="flex items-start gap-3">
               <img src="SKY Studio.svg" alt="SKY OS/UI" class="w-10 h-10 rounded-lg mt-0.5">
               <div>
-                <h3 class="font-semibold text-gray-800 text-lg">SKY OS/UI</h3>
+                <h3 class="font-semibold text-gray-800 text-lg leading-tight">SKY OS/UI</h3>
                 <p class="text-gray-400 text-sm">Operating System &amp; UI</p>
                 <p class="text-gray-500 text-sm mt-2 leading-relaxed">基于 TurboWarp 构建的桌面操作系统与用户界面，提供直观流畅的交互体验。v1.8.2</p>
                 <a href="SKY OSUI.html" target="_blank" class="inline-flex items-center gap-1 text-sky-darker hover:text-sky-darker/80 text-sm font-medium mt-3 transition-colors">
@@ -276,13 +458,11 @@
 
           <!-- SKY Editor -->
           <div>
-            <div class="screenshot-placeholder mb-5">
-              SKY Editor — Screenshot
-            </div>
+            <div class="shot">SKY Editor — Screenshot</div>
             <div class="flex items-start gap-3">
               <img src="icon.png" alt="SKY Editor" class="w-10 h-10 rounded-lg mt-0.5">
               <div>
-                <h3 class="font-semibold text-gray-800 text-lg">SKY Editor</h3>
+                <h3 class="font-semibold text-gray-800 text-lg leading-tight">SKY Editor</h3>
                 <p class="text-gray-400 text-sm">Runtime &amp; Interpreter</p>
                 <p class="text-gray-500 text-sm mt-2 leading-relaxed">TurboWarp 深度定制版解释器，专为运行 SKY OS/UI 应用优化。v3.2.1</p>
                 <a href="SKY Editor.html" target="_blank" class="inline-flex items-center gap-1 text-sky-darker hover:text-sky-darker/80 text-sm font-medium mt-3 transition-colors">
@@ -294,13 +474,11 @@
 
           <!-- SKY Code -->
           <div>
-            <div class="screenshot-placeholder mb-5">
-              SKY Code — Screenshot
-            </div>
+            <div class="shot">SKY Code — Screenshot</div>
             <div class="flex items-start gap-3">
               <img src="SKY Code.png" alt="SKY Code" class="w-10 h-10 rounded-lg mt-0.5">
               <div>
-                <h3 class="font-semibold text-gray-800 text-lg">SKY Code</h3>
+                <h3 class="font-semibold text-gray-800 text-lg leading-tight">SKY Code</h3>
                 <p class="text-gray-400 text-sm">Programming Language</p>
                 <p class="text-gray-500 text-sm mt-2 leading-relaxed">仿 Python 语法的专属编程语言，简洁优雅，专为 SKY 生态设计。v2.0.5</p>
                 <a href="SKY Code.html" target="_blank" class="inline-flex items-center gap-1 text-sky-darker hover:text-sky-darker/80 text-sm font-medium mt-3 transition-colors">
@@ -314,39 +492,39 @@
     </section>
 
     <!-- ==================== 开发者工具集成区 ==================== -->
-    <section id="tools" class="py-16 md:py-24 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="max-w-5xl mx-auto text-center mb-14">
-          <p class="text-sky-darker text-sm font-semibold tracking-widest uppercase mb-3">Developer Tools</p>
-          <h2 class="text-[clamp(1.6rem,3vw,2.5rem)] font-bold text-gray-900 mb-4">一站式开发者工具链</h2>
-          <p class="text-gray-400 text-lg">All-in-One Developer Toolchain</p>
+    <section id="tools" class="screen">
+      <div class="screen-inner">
+        <div class="text-center">
+          <p class="section-eyebrow">Developer Tools</p>
+          <h2 class="section-title">一站式开发者工具链</h2>
+          <p class="section-sub">All-in-One Developer Toolchain</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto justify-center">
-          <div class="card-hover bg-sky-light/30 rounded-xl p-6 text-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 max-w-4xl mx-auto">
+          <div class="card-hover bg-sky-light/40 rounded-xl p-6 text-center">
             <div class="w-12 h-12 mx-auto mb-4 rounded-lg bg-sky-darker/10 flex items-center justify-center">
               <i class="fa fa-book text-sky-darker text-lg"></i>
             </div>
             <h4 class="font-semibold text-gray-800 mb-1">开发者文档</h4>
-            <p class="text-gray-400 text-xs mb-2">Documentation</p>
+            <p class="text-gray-400 text-xs mb-2 tracking-wide">Documentation</p>
             <p class="text-gray-500 text-sm">完整 API 参考与开发指南，助你快速上手</p>
           </div>
 
-          <div class="card-hover bg-sky-light/30 rounded-xl p-6 text-center">
+          <div class="card-hover bg-sky-light/40 rounded-xl p-6 text-center">
             <div class="w-12 h-12 mx-auto mb-4 rounded-lg bg-sky-darker/10 flex items-center justify-center">
               <i class="fa fa-comments text-sky-darker text-lg"></i>
             </div>
             <h4 class="font-semibold text-gray-800 mb-1">社区论坛</h4>
-            <p class="text-gray-400 text-xs mb-2">Community</p>
+            <p class="text-gray-400 text-xs mb-2 tracking-wide">Community</p>
             <p class="text-gray-500 text-sm">与其他开发者交流经验、解决问题、分享创意</p>
           </div>
 
-          <div class="card-hover bg-sky-light/30 rounded-xl p-6 text-center">
+          <div class="card-hover bg-sky-light/40 rounded-xl p-6 text-center">
             <div class="w-12 h-12 mx-auto mb-4 rounded-lg bg-sky-darker/10 flex items-center justify-center">
               <i class="fa fa-github text-sky-darker text-lg"></i>
             </div>
             <h4 class="font-semibold text-gray-800 mb-1">开源仓库</h4>
-            <p class="text-gray-400 text-xs mb-2">Open Source</p>
+            <p class="text-gray-400 text-xs mb-2 tracking-wide">Open Source</p>
             <p class="text-gray-500 text-sm">GitHub 上查看源码，参与贡献</p>
           </div>
         </div>
@@ -354,16 +532,16 @@
     </section>
 
     <!-- ==================== 下载 CTA 区 ==================== -->
-    <section id="download" class="py-16 md:py-24 bg-sky-light/30">
-      <div class="container mx-auto px-4">
+    <section id="download" class="screen">
+      <div class="screen-inner">
         <div class="max-w-3xl mx-auto text-center">
-          <p class="text-sky-darker text-sm font-semibold tracking-widest uppercase mb-3">Get Started</p>
-          <h2 class="text-[clamp(1.6rem,3vw,2.5rem)] font-bold text-gray-900 mb-4">准备好开始了吗？</h2>
-          <p class="text-gray-400 text-lg mb-10">Ready to Build? Download the Full Developer Suite</p>
+          <p class="section-eyebrow">Get Started</p>
+          <h2 class="section-title">准备好开始了吗？</h2>
+          <p class="section-sub">Ready to Build? Download the Full Developer Suite</p>
 
           <div class="card-hover bg-white rounded-2xl shadow-lg p-8 md:p-10 text-center">
-            <h3 class="text-2xl font-bold text-gray-900 mb-3">SKY Studio 项目堆</h3>
-            <p class="text-gray-400 text-sm mb-8">Project Stack</p>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">SKY Studio 项目堆</h3>
+            <p class="text-gray-400 text-sm mb-7 tracking-wide">Project Stack</p>
             <a href="download.html" class="btn-glow inline-flex items-center gap-2 px-10 py-4 bg-sky-darker hover:bg-sky-darker/90 text-white rounded-xl font-semibold text-base">
               <i class="fa fa-download"></i> 前往下载 Go to Download
             </a>
@@ -371,52 +549,48 @@
         </div>
       </div>
     </section>
-
-
   </main>
 
   <!-- ==================== 页脚 ==================== -->
-  <footer class="bg-gray-900 text-white/70 py-10">
-    <div class="container mx-auto px-4">
-      <div class="max-w-5xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <h4 class="text-white font-semibold mb-4 text-sm">产品 Products</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#" class="hover:text-white transition-colors">SKY OS/UI</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">SKY Editor</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">SKY Code</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-white font-semibold mb-4 text-sm">资源 Resources</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#" class="hover:text-white transition-colors">文档</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">教程</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">社区</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-white font-semibold mb-4 text-sm">法律 Legal</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#" class="hover:text-white transition-colors">隐私政策</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">服务条款</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">开发者协议</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-white font-semibold mb-4 text-sm">关于 About</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#" class="hover:text-white transition-colors">关于我们</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">加入我们</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">联系我们</a></li>
-            </ul>
-          </div>
+  <footer id="siteFooter" class="bg-gray-900 text-white/70 py-10">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8 text-center md:text-left">
+        <div>
+          <h4 class="text-white font-semibold mb-4 text-sm">产品 Products</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white transition-colors">SKY OS/UI</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">SKY Editor</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">SKY Code</a></li>
+          </ul>
         </div>
+        <div>
+          <h4 class="text-white font-semibold mb-4 text-sm">资源 Resources</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white transition-colors">文档</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">教程</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">社区</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-4 text-sm">法律 Legal</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white transition-colors">隐私政策</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">服务条款</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">开发者协议</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-4 text-sm">关于 About</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white transition-colors">关于我们</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">加入我们</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">联系我们</a></li>
+          </ul>
+        </div>
+      </div>
 
-        <div class="pt-8 border-t border-gray-800 text-center text-sm text-white/30">
-          <p>&copy; 2025 SKY Studio. All rights reserved.</p>
-        </div>
+      <div class="pt-8 border-t border-gray-800 text-center text-sm text-white/30">
+        <p>&copy; 2025 SKY Studio. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -443,30 +617,51 @@
       });
     });
 
+    // 滚动时仅加阴影，不改变导航高度（避免满屏区块跳动）
     window.addEventListener('scroll', () => {
-      const header = document.querySelector('header');
-      if (window.scrollY > 50) {
-        header.classList.add('py-2');
-        header.classList.remove('py-4');
+      const header = document.getElementById('siteHeader');
+      if (window.scrollY > 40) {
         header.classList.add('shadow');
       } else {
-        header.classList.add('py-4');
-        header.classList.remove('py-2');
         header.classList.remove('shadow');
       }
     });
 
+    // ===== 外圈高光描边跟随光标（仅精确指针 + hover 环境启用）=====
+    (function () {
+      const stage = document.getElementById('sloganStage');
+      const hero = document.getElementById('hero');
+      if (!stage || !hero) return;
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+      // 监听整个首屏：光斑随光标走，只有落在字形轮廓上才可见，
+      // 不依赖 .slogan-stage 的矩形热区，避免进出文字边界时反复开关导致闪烁
+      hero.addEventListener('mousemove', (e) => {
+        const r = stage.getBoundingClientRect();
+        stage.style.setProperty('--mx', (e.clientX - r.left).toFixed(1) + 'px');
+        stage.style.setProperty('--my', (e.clientY - r.top).toFixed(1) + 'px');
+      }, { passive: true });
+
+      // 光标离开首屏：把光斑移到视野外（mask 归零），彻底熄灭且无残留
+      hero.addEventListener('mouseleave', () => {
+        stage.style.setProperty('--mx', '-999px');
+        stage.style.setProperty('--my', '-999px');
+      });
+    })();
+
+    // 锚点平滑滚动（按区块整体对齐）
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        if (!target) return;
         e.preventDefault();
         if (!mobileMenu.classList.contains('hidden')) {
           mobileMenu.classList.add('hidden');
           menuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
         }
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
   </script>
