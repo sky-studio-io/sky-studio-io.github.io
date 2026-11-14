@@ -4,7 +4,7 @@
   <link rel="icon" type="image/svg+xml" href="SKY Studio.svg">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SKY Editor — SKY Studio</title>
+  <title>SKYEditor — SKY Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -42,13 +42,13 @@
       from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .animate-fadeUp { animation: fadeUp 0.7 ease-out both; }
-    .animate-fadeUp-1 { animation-delay: 0.1; }
-    .animate-fadeUp-2 { animation-delay: 0.2; }
-    .animate-fadeUp-3 { animation-delay: 0.3; }
+    .animate-fadeUp { animation: fadeUp 0.7s ease-out both; }
+    .animate-fadeUp-1 { animation-delay: 0.1s; }
+    .animate-fadeUp-2 { animation-delay: 0.2s; }
+    .animate-fadeUp-3 { animation-delay: 0.3s; }
 
     .card-hover {
-      transition: all 0.35 cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .card-hover:hover {
       transform: translateY(-6px);
@@ -56,7 +56,7 @@
     }
 
     .btn-glow {
-      transition: all 0.3 ease;
+      transition: all 0.3s ease;
     }
     .btn-glow:hover {
       box-shadow: 0 8px 32px rgba(30, 91, 255, 0.35), 0 2px 8px rgba(30, 91, 255, 0.2);
@@ -128,7 +128,7 @@
             <i class="fa fa-cogs"></i> Runtime &amp; Interpreter
           </div>
           <h1 class="text-[clamp(2.4rem,5.5vw,4.2rem)] font-extrabold text-gray-900 mb-2 leading-[1.1] tracking-tight">
-            SKY Editor
+            SKYEditor
           </h1>
           <p class="text-lg md:text-xl text-gray-400 max-w-xl mx-auto mb-2">
             TurboWarp 深度定制版解释器，专为运行 SKY OS/UI 应用优化
@@ -223,7 +223,7 @@
             <h4 class="text-white font-semibold mb-4 text-sm">产品 Products</h4>
             <ul class="space-y-2 text-sm">
               <li><a href="#" class="hover:text-white transition-colors">SKY OS/UI</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">SKY Editor</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">SKYEditor</a></li>
               <li><a href="#" class="hover:text-white transition-colors">SKY Code</a></li>
             </ul>
           </div>

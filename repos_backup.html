@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <link rel="icon" type="image/svg+xml" href="SKY Studio.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仓库中心 — SKY Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sky: {
+              light: '#E6EEFF',
+              DEFAULT: '#84A9FF',
+              dark: '#3B7BFF',
+              darker: '#1E5BFF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #F0F5FF;
+      background-image:
+        radial-gradient(at 40% 20%, rgba(132, 169, 255, 0.1) 0px, transparent 50%),
+        radial-gradient(at 80% 0%, rgba(59, 123, 255, 0.1) 0px, transparent 50%),
+        radial-gradient(at 0% 50%, rgba(30, 91, 255, 0.1) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeUp { animation: fadeUp 0.7s ease-out both; }
+    .animate-fadeUp-1 { animation-delay: 0.1s; }
+    .animate-fadeUp-2 { animation-delay: 0.2s; }
+
+    /* 卡片悬浮 + 发光 */
+    .card-hover {
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .card-hover:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(30, 91, 255, 0.18), 0 4px 12px rgba(30, 91, 255, 0.08);
+    }
+
+    /* 按钮发光（不浮动） */
+    .btn-glow-outline {
+      transition: all 0.3s ease;
+    }
+    .btn-glow-outline:hover {
+      box-shadow: 0 6px 24px rgba(30, 91, 255, 0.15), 0 1px 4px rgba(30, 91, 255, 0.1);
+    }
+    .btn-glow {
+      transition: all 0.3s ease;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 8px 32px rgba(30, 91, 255, 0.35), 0 2px 8px rgba(30, 91, 255, 0.2);
+    }
+
+    /* 导航 */
+    .nav-item {
+      position: relative;
+      padding: 0.5rem 1rem;
+      color: #374151;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-item:hover { color: #1E5BFF; }
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background: #1E5BFF;
+      transition: all 0.3s;
+    }
+    .nav-item:hover::after { width: 100%; }
+  </style>
+</head>
+
+<body class="font-sans text-gray-800 min-h-screen">
+
+  <!-- ==================== 导航栏 ==================== -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm transition-all duration-300">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <nav class="hidden md:flex items-center space-x-2">
+        <a href="index.html" class="nav-item font-medium">首页</a>
+        <a href="index.html#features" class="nav-item font-medium">特性</a>
+        <a href="index.html#products" class="nav-item font-medium">产品</a>
+      </nav>
+
+      <div class="flex items-center">
+        <div class="w-12 h-12 rounded-full">
+          <div class="w-15 h-15 relative">
+            <img src="SKY Studio.svg" alt="LOGO">
+          </div>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center space-x-2">
+        <a href="index.html#tools" class="nav-item font-medium">工具</a>
+        <a href="download.html" class="nav-item font-medium">下载</a>
+        <a href="repos.html" class="nav-item font-medium" style="color:#1E5BFF">仓库</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden text-gray-700 focus:outline-none">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="md:hidden hidden bg-white border-t border-gray-100">
+      <div class="container mx-auto px-4 py-2 flex flex-col space-y-1">
+        <a href="index.html" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">首页</a>
+        <a href="index.html#features" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">特性</a>
+        <a href="index.html#products" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">产品</a>
+        <a href="index.html#tools" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">工具</a>
+        <a href="download.html" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">下载</a>
+        <a href="repos.html" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors font-medium" style="color:#1E5BFF">仓库</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================== 标题 ==================== -->
+    <section class="py-16 md:py-24">
+      <div class="container mx-auto px-4 text-center">
+        <div class="animate-fadeUp max-w-3xl mx-auto">
+          <p class="text-sky-darker text-sm font-semibold tracking-widest uppercase mb-4">Repositories</p>
+          <h1 class="text-[clamp(2.2rem,5vw,3.8rem)] font-extrabold text-gray-900 mb-4 leading-[1.1] tracking-tight">
+            仓库中心
+          </h1>
+          <p class="text-lg md:text-xl text-gray-400 max-w-xl mx-auto mb-2">
+            探索 SKY Studio 开源代码仓库与项目文档
+          </p>
+          <p class="text-base text-gray-400/70 max-w-lg mx-auto">
+            Explore Open-Source Repositories &amp; Project Documentation
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 标签切换 + 仓库卡片 ==================== -->
+    <section class="pb-16 md:pb-24">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+
+          <!-- SKY Studio 项目堆 -->
+          <div class="card-hover bg-white rounded-2xl shadow-lg p-8 md:p-10 animate-fadeUp animate-fadeUp-1 mb-8">
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 rounded-2xl bg-sky-light mx-auto flex items-center justify-center mb-3">
+                <i class="fa fa-cubes text-sky-darker text-3xl"></i>
+              </div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-1">SKY Studio 项目堆</h2>
+              <p class="text-gray-400 text-sm">Project Stack</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- SKY OS/UI -->
+              <div class="p-5 rounded-xl bg-sky-light/30 border border-sky-light">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fa fa-desktop text-sky-darker text-xl"></i>
+                  <div>
+                    <p class="font-semibold text-gray-800">SKY OS/UI</p>
+                    <p class="text-xs text-gray-400">v1.8.2</p>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-500">基于 TurboWarp 的桌面操作系统，多窗口管理与文件管理器</p>
+              </div>
+
+              <!-- SKYEditor -->
+              <div class="p-5 rounded-xl bg-sky-light/30 border border-sky-light">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fa fa-cogs text-sky-darker text-xl"></i>
+                  <div>
+                    <p class="font-semibold text-gray-800">SKYEditor</p>
+                    <p class="text-xs text-gray-400">v3.2.1</p>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-500">TurboWarp 深度定制编辑器，性能优化 40%+ 与插件架构</p>
+              </div>
+
+              <!-- SKY Code -->
+              <div class="p-5 rounded-xl bg-sky-light/30 border border-sky-light">
+                <div class="flex items-center gap-3 mb-3">
+                  <i class="fa fa-code text-sky-darker text-xl"></i>
+                  <div>
+                    <p class="font-semibold text-gray-800">SKY Code</p>
+                    <p class="text-xs text-gray-400">v2.0.5</p>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-500">类 Python 语法编程语言，丰富标准库与模块化架构</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 前往下载按钮 -->
+          <div class="text-center animate-fadeUp animate-fadeUp-2">
+            <a href="download.html" class="btn-glow inline-flex items-center gap-2 px-10 py-4 bg-sky-darker hover:bg-sky-darker/90 text-white rounded-xl font-semibold text-base">
+              <i class="fa fa-download"></i> 前往下载 Go to Download
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== 页脚 ==================== -->
+  <footer class="bg-gray-900 text-white/70 py-10">
+    <div class="container mx-auto px-4">
+      <div class="max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <h4 class="text-white font-semibold mb-4 text-sm">产品 Products</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#" class="hover:text-white transition-colors">SKY OS/UI</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">SKYEditor</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">SKY Code</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-4 text-sm">资源 Resources</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#" class="hover:text-white transition-colors">文档</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">教程</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">社区</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-4 text-sm">法律 Legal</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#" class="hover:text-white transition-colors">隐私政策</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">服务条款</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">开发者协议</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-4 text-sm">关于 About</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#" class="hover:text-white transition-colors">关于我们</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">加入我们</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">联系我们</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pt-8 border-t border-gray-800 text-center text-sm text-white/30">
+          <p>&copy; 2025 SKY Studio. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== JavaScript ==================== -->
+  <script>
+    /* 移动端菜单 */
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const icon = menuBtn.querySelector('i');
+      if (icon.classList.contains('fa-bars')) {
+        icon.classList.replace('fa-bars', 'fa-times');
+      } else {
+        icon.classList.replace('fa-times', 'fa-bars');
+      }
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
+      });
+    });
+
+    /* 平滑滚动 */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (!mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          menuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
+        }
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

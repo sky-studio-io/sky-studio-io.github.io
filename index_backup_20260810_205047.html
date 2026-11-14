@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKY Studio — 下一代开发与应用生态</title>
+  <link rel="icon" type="image/png" href="LOGO.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#EEF2FF',
+              100: '#E0E7FF',
+              200: '#C7D2FE',
+              300: '#A5B4FC',
+              400: '#818CF8',
+              500: '#6366F1',
+              600: '#4F46E5',
+              700: '#4338CA',
+              800: '#3730A3',
+              900: '#312E81',
+            },
+            surface: {
+              DEFAULT: '#0B0D17',
+              50:  '#F8FAFC',
+              100: '#F1F5F9',
+              200: '#E2E8F0',
+              700: '#1E2235',
+              800: '#151824',
+              900: '#0B0D17',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.15); }
+      50%      { box-shadow: 0 0 80px rgba(99, 102, 241, 0.35); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    .animate-fadeUp    { animation: fadeUp 0.8s ease-out both; }
+    .animate-fadeUp-1  { animation-delay: 0.1s; }
+    .animate-fadeUp-2  { animation-delay: 0.25s; }
+    .animate-fadeUp-3  { animation-delay: 0.4s; }
+    .animate-glow      { animation: glowPulse 4s ease-in-out infinite; }
+    .animate-float     { animation: float 6s ease-in-out infinite; }
+    .animate-float-delay { animation: float 6s ease-in-out 2s infinite; }
+
+    html { scroll-behavior: smooth; }
+    body { background-color: #0B0D17; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #818CF8 0%, #6366F1 40%, #A78BFA 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-grid {
+      background-image:
+        radial-gradient(ellipse at 30% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 60%, rgba(167, 139, 250, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(99, 102, 241, 0.06) 0%, transparent 50%);
+    }
+
+    .glass-card {
+      background: rgba(30, 34, 53, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366F1, #4F46E5);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4F46E5, #4338CA);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    .btn-outline:hover {
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .feature-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(99, 102, 241, 0.12);
+    }
+
+    .screenshot-placeholder {
+      background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(167,139,250,0.06));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      aspect-ratio: 16/10;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.25);
+      transition: all 0.3s ease;
+    }
+    .screenshot-placeholder:hover {
+      border-color: rgba(99,102,241,0.3);
+      color: rgba(255,255,255,0.4);
+    }
+  </style>
+</head>
+
+<body class="font-sans text-white antialiased">
+
+  <!-- ========== 导航栏 ========== -->
+  <header class="fixed top-0 inset-x-0 z-50 transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5">
+        <img src="LOGO.png" alt="SKY Studio" class="h-9 w-9 rounded-lg">
+        <span class="text-lg font-semibold tracking-tight">SKY Studio</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
+        <a href="#products" class="hover:text-white transition-colors">产品 Products</a>
+        <a href="#features" class="hover:text-white transition-colors">特性 Features</a>
+        <a href="#tools" class="hover:text-white transition-colors">工具 Tools</a>
+        <a href="#download" class="hover:text-white transition-colors">下载 Download</a>
+      </nav>
+
+      <button id="menuBtn" class="md:hidden text-white/70 hover:text-white">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <!-- 移动端菜单 -->
+    <div id="mobileMenu" class="md:hidden hidden bg-surface-800/95 backdrop-blur-md border-t border-white/5">
+      <div class="px-6 py-4 flex flex-col gap-2">
+        <a href="#products"  class="py-2.5 text-white/60 hover:text-white transition-colors">产品 Products</a>
+        <a href="#features"  class="py-2.5 text-white/60 hover:text-white transition-colors">特性 Features</a>
+        <a href="#tools"     class="py-2.5 text-white/60 hover:text-white transition-colors">工具 Tools</a>
+        <a href="#download"  class="py-2.5 text-white/60 hover:text-white transition-colors">下载 Download</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========== Hero 区 ========== -->
+    <section class="hero-grid relative min-h-screen flex items-center justify-center pt-20 pb-16">
+      <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+        <!-- 标签 -->
+        <div class="animate-fadeUp inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.03] text-sm text-white/50 mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse"></span>
+          SKY Studio 开发者套件 v2.5.2
+        </div>
+
+        <!-- 主标题 -->
+        <h1 class="animate-fadeUp animate-fadeUp-1 text-[clamp(2.8rem,7vw,5rem)] font-extrabold leading-[1.05] tracking-tight mb-6">
+          <span class="gradient-text">构建未来的</span><br>
+          <span class="text-white">开发与应用生态</span>
+        </h1>
+
+        <p class="animate-fadeUp animate-fadeUp-2 text-lg md:text-xl text-white/40 max-w-2xl mx-auto mb-4 leading-relaxed">
+          Build the Future of Development &amp; Application Ecosystem
+        </p>
+        <p class="animate-fadeUp animate-fadeUp-2 text-base text-white/30 max-w-xl mx-auto mb-12">
+          一套完整的操作系统、编程语言与解释器，为开发者和用户带来无缝衔接的卓越体验。
+        </p>
+
+        <!-- CTA 按钮 -->
+        <div class="animate-fadeUp animate-fadeUp-3 flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+          <a href="#download" class="btn-primary px-8 py-3.5 rounded-xl text-base font-semibold inline-flex items-center gap-2">
+            <i class="fa fa-download"></i> 立即下载 Download
+          </a>
+          <a href="#" class="btn-outline px-8 py-3.5 rounded-xl text-base font-semibold inline-flex items-center gap-2 text-white/70 hover:text-white">
+            <i class="fa fa-cloud"></i> 在线体验 Online
+          </a>
+        </div>
+
+        <!-- 三产品概览 -->
+        <div class="animate-fadeUp animate-fadeUp-3 grid grid-cols-3 gap-6 max-w-xl mx-auto">
+          <div class="glass-card rounded-2xl p-5 text-center animate-float">
+            <div class="text-brand-400 text-2xl mb-2"><i class="fa fa-desktop"></i></div>
+            <div class="font-semibold text-sm text-white/80">SKY OS/UI</div>
+            <div class="text-xs text-white/30 mt-1">操作系统</div>
+          </div>
+          <div class="glass-card rounded-2xl p-5 text-center animate-float-delay">
+            <div class="text-brand-400 text-2xl mb-2"><i class="fa fa-cogs"></i></div>
+            <div class="font-semibold text-sm text-white/80">SKY Engine</div>
+            <div class="text-xs text-white/30 mt-1">解释器</div>
+          </div>
+          <div class="glass-card rounded-2xl p-5 text-center animate-float">
+            <div class="text-brand-400 text-2xl mb-2"><i class="fa fa-code"></i></div>
+            <div class="font-semibold text-sm text-white/80">SKY Code</div>
+            <div class="text-xs text-white/30 mt-1">编程语言</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部渐变遮罩 -->
+      <div class="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-surface-900 to-transparent pointer-events-none"></div>
+    </section>
+
+    <!-- ========== Why SKY Studio 特性区 ========== -->
+    <section id="features" class="py-24 relative">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <p class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3">Why SKY Studio</p>
+          <h2 class="text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-white mb-4">
+            为开发者而生，<span class="gradient-text">为性能而建</span>
+          </h2>
+          <p class="text-white/35 text-lg max-w-xl mx-auto">
+            Built for Developers, Engineered for Performance
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- 特性1 -->
+          <div class="glass-card rounded-2xl p-8 hover:border-white/12 transition-all duration-300 group">
+            <div class="feature-icon mb-6 group-hover:bg-brand-400/20 transition-colors">
+              <i class="fa fa-bolt text-brand-400 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-3 text-white">极限性能</h3>
+            <p class="text-white/30 text-sm mb-4">Extreme Performance</p>
+            <p class="text-white/50 leading-relaxed">
+              优化的底层架构与高效的内存管理，让 SKY Engine 以毫秒级响应运行你的应用。轻量设计，即使在低配设备上也能流畅运转。
+            </p>
+          </div>
+
+          <!-- 特性2 -->
+          <div class="glass-card rounded-2xl p-8 hover:border-white/12 transition-all duration-300 group">
+            <div class="feature-icon mb-6 group-hover:bg-brand-400/20 transition-colors">
+              <i class="fa fa-puzzle-piece text-brand-400 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-3 text-white">丰富扩展</h3>
+            <p class="text-white/30 text-sm mb-4">Rich Extensibility</p>
+            <p class="text-white/50 leading-relaxed">
+              SKY Code 提供类 Python 的简洁语法与强大的标准库，支持模块化开发。丰富的 API 接口让功能扩展变得轻而易举。
+            </p>
+          </div>
+
+          <!-- 特性3 -->
+          <div class="glass-card rounded-2xl p-8 hover:border-white/12 transition-all duration-300 group">
+            <div class="feature-icon mb-6 group-hover:bg-brand-400/20 transition-colors">
+              <i class="fa fa-cubes text-brand-400 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-3 text-white">功能集成</h3>
+            <p class="text-white/30 text-sm mb-4">Integrated Ecosystem</p>
+            <p class="text-white/50 leading-relaxed">
+              从编写代码到运行应用，SKY OS/UI 提供一体化的桌面环境。开发者套件一站式集成了开发、调试、部署全流程工具。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 产品展示截图区 ========== -->
+    <section id="products" class="py-24 relative">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <p class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3">Products</p>
+          <h2 class="text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-white mb-4">
+            三大核心产品
+          </h2>
+          <p class="text-white/35 text-lg max-w-xl mx-auto">
+            Three Core Products, One Unified Vision
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- SKY OS/UI -->
+          <div class="group">
+            <div class="screenshot-placeholder mb-5">
+              SKY OS/UI — Screenshot
+            </div>
+            <div class="flex items-start gap-3">
+              <img src="SKY LOGO.png" alt="SKY OS/UI" class="w-10 h-10 rounded-lg mt-0.5">
+              <div>
+                <h3 class="font-semibold text-white text-lg">SKY OS/UI</h3>
+                <p class="text-white/30 text-sm">Operating System &amp; UI</p>
+                <p class="text-white/45 text-sm mt-2 leading-relaxed">基于 TurboWarp 构建的桌面操作系统与用户界面，提供直观流畅的交互体验。v1.8.2</p>
+                <a href="SKY OSUI.html" class="inline-flex items-center gap-1 text-brand-400 text-sm mt-3 hover:text-brand-300 transition-colors">
+                  了解更多 <i class="fa fa-arrow-right text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- SKY Engine -->
+          <div class="group">
+            <div class="screenshot-placeholder mb-5">
+              SKY Engine — Screenshot
+            </div>
+            <div class="flex items-start gap-3">
+              <img src="icon.png" alt="SKY Engine" class="w-10 h-10 rounded-lg mt-0.5">
+              <div>
+                <h3 class="font-semibold text-white text-lg">SKY Engine</h3>
+                <p class="text-white/30 text-sm">Runtime &amp; Interpreter</p>
+                <p class="text-white/45 text-sm mt-2 leading-relaxed">TurboWarp 深度定制版解释器，专为运行 SKY OS/UI 应用优化。v3.2.1</p>
+                <a href="SKY Engine.html" class="inline-flex items-center gap-1 text-brand-400 text-sm mt-3 hover:text-brand-300 transition-colors">
+                  了解更多 <i class="fa fa-arrow-right text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- SKY Code -->
+          <div class="group">
+            <div class="screenshot-placeholder mb-5">
+              SKY Code — Screenshot
+            </div>
+            <div class="flex items-start gap-3">
+              <img src="SKY Code.png" alt="SKY Code" class="w-10 h-10 rounded-lg mt-0.5">
+              <div>
+                <h3 class="font-semibold text-white text-lg">SKY Code</h3>
+                <p class="text-white/30 text-sm">Programming Language</p>
+                <p class="text-white/45 text-sm mt-2 leading-relaxed">仿 Python 语法的专属编程语言，简洁优雅，专为 SKY 生态设计。v2.0.5</p>
+                <a href="SKY Code.html" class="inline-flex items-center gap-1 text-brand-400 text-sm mt-3 hover:text-brand-300 transition-colors">
+                  了解更多 <i class="fa fa-arrow-right text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 开发者工具集成区 ========== -->
+    <section id="tools" class="py-24 relative">
+      <div class="absolute inset-0 bg-gradient-to-b from-brand-900/5 to-transparent pointer-events-none"></div>
+      <div class="max-w-6xl mx-auto px-6 relative z-10">
+        <div class="text-center mb-16">
+          <p class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-3">Developer Tools</p>
+          <h2 class="text-[clamp(1.8rem,4vw,2.8rem)] font-bold text-white mb-4">
+            一站式开发者工具链
+          </h2>
+          <p class="text-white/35 text-lg max-w-xl mx-auto">
+            All-in-One Developer Toolchain
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="glass-card rounded-2xl p-6 text-center hover:border-white/12 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-brand-400/10 flex items-center justify-center mx-auto mb-4">
+              <i class="fa fa-book text-brand-400 text-lg"></i>
+            </div>
+            <h4 class="font-semibold text-white mb-1">开发者文档</h4>
+            <p class="text-white/30 text-xs">Documentation</p>
+            <p class="text-white/45 text-sm mt-3">完整 API 参考与开发指南，助你快速上手</p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 text-center hover:border-white/12 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-brand-400/10 flex items-center justify-center mx-auto mb-4">
+              <i class="fa fa-graduation-cap text-brand-400 text-lg"></i>
+            </div>
+            <h4 class="font-semibold text-white mb-1">开发者学院</h4>
+            <p class="text-white/30 text-xs">Academy</p>
+            <p class="text-white/45 text-sm mt-3">视频课程与实战项目，系统提升技能</p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 text-center hover:border-white/12 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-brand-400/10 flex items-center justify-center mx-auto mb-4">
+              <i class="fa fa-comments text-brand-400 text-lg"></i>
+            </div>
+            <h4 class="font-semibold text-white mb-1">社区论坛</h4>
+            <p class="text-white/30 text-xs">Community</p>
+            <p class="text-white/45 text-sm mt-3">交流经验、解决问题、分享创意</p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 text-center hover:border-white/12 transition-all duration-300">
+            <div class="w-12 h-12 rounded-xl bg-brand-400/10 flex items-center justify-center mx-auto mb-4">
+              <i class="fa fa-github text-brand-400 text-lg"></i>
+            </div>
+            <h4 class="font-semibold text-white mb-1">开源仓库</h4>
+            <p class="text-white/30 text-xs">Open Source</p>
+            <p class="text-white/45 text-sm mt-3">GitHub 上查看源码，参与贡献</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 下载 CTA 区 ========== -->
+    <section id="download" class="py-24 relative">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <div class="glass-card rounded-3xl p-10 md:p-16 animate-glow">
+          <p class="text-brand-400 text-sm font-semibold tracking-widest uppercase mb-4">Get Started</p>
+          <h2 class="text-[clamp(1.5rem,3vw,2.2rem)] font-bold text-white mb-3">
+            准备好开始了吗？
+          </h2>
+          <p class="text-white/35 text-lg mb-10">Ready to Build? Download the Full Developer Suite</p>
+
+          <a href="https://123-184-218-56.pd1.cjjd19.com:30443/download-cdn.123295.com/123-676/f1ecbd71/1814163603-0/f1ecbd7129cc588c1ff473d7d1fe7ea4/c-m104?v=5&t=1759497954&s=1759497954c2747a7922d95e82fe80a1bcba48666e&r=2UGQTG&bzc=2&bzs=313831343136333630333a31323232323339363a343539373a31383134313633363033&bzp=0&bi=997361931&filename=SKY+Studio%E5%BC%80%E5%8F%91%E8%80%85%E5%A5%97%E4%BB%B6.zip&x-mf-biz-cid=0dc3f7e7-6fc4-4091-b5aa-e25878dc1173-3dab77&auto_redirect=0&ndcp=1&cache_type=1&xmfcid=718e01f2-27a8-4cc0-b67b-9264fa48f9329478eae86e8" class="btn-primary px-10 py-4 rounded-xl text-lg font-semibold inline-flex items-center gap-3 mb-8">
+            <i class="fa fa-download"></i> 下载开发者套件 · v2.5.2
+          </a>
+
+          <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-white/25">
+            <span>包含 SKY OS/UI · SKY Engine · SKY Code</span>
+            <a href="https://github.com/SKY-Studio-cn/SKY-UI/blob/main/SKYUI%E5%BC%80%E5%8F%91%E8%80%85%E5%8D%8F%E8%AE%AE%EF%BC%88%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%EF%BC%89.md" class="text-brand-400 hover:text-brand-300 transition-colors">开发者协议 →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 页脚 ========== -->
+    <footer class="border-t border-white/5 py-16">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+          <div class="col-span-2">
+            <div class="flex items-center gap-2.5 mb-4">
+              <img src="LOGO.png" alt="SKY Studio" class="h-8 w-8 rounded-lg">
+              <span class="text-white font-semibold">SKY Studio</span>
+            </div>
+            <p class="text-white/25 text-sm leading-relaxed max-w-xs">
+              创新的操作系统、强大的编程语言和高效的解释器，为开发者与用户带来卓越体验。
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-white text-sm font-semibold mb-4">产品 Products</h4>
+            <ul class="space-y-2.5 text-sm text-white/35">
+              <li><a href="#" class="hover:text-white transition-colors">SKY OS/UI</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">SKY Engine</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">SKY Code</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-white text-sm font-semibold mb-4">资源 Resources</h4>
+            <ul class="space-y-2.5 text-sm text-white/35">
+              <li><a href="#" class="hover:text-white transition-colors">文档</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">教程</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">社区</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-white text-sm font-semibold mb-4">法律 Legal</h4>
+            <ul class="space-y-2.5 text-sm text-white/35">
+              <li><a href="#" class="hover:text-white transition-colors">隐私政策</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">服务条款</a></li>
+              <li><a href="#" class="hover:text-white transition-colors">开发者协议</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="text-white/20 text-sm">&copy; 2025 SKY Studio. All rights reserved.</p>
+          <div class="flex items-center gap-4 text-white/25 text-sm">
+            <span><i class="fa fa-envelope-o mr-1"></i> keyanswr@Outlook.com</span>
+            <span class="hidden sm:inline">|</span>
+            <span><i class="fa fa-map-marker mr-1"></i> 常州市新北区</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ========== JavaScript ========== -->
+  <script>
+    // 移动端菜单
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const icon = menuBtn.querySelector('i');
+      icon.classList.contains('fa-bars')
+        ? icon.classList.replace('fa-bars', 'fa-times')
+        : icon.classList.replace('fa-times', 'fa-bars');
+    });
+
+    // 移动端菜单链接点击后关闭
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
+      });
+    });
+
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.style.background = 'rgba(11,13,23,0.85)';
+        navbar.style.backdropFilter = 'blur(16px)';
+        navbar.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+      } else {
+        navbar.style.background = 'transparent';
+        navbar.style.backdropFilter = 'none';
+        navbar.style.borderBottom = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
