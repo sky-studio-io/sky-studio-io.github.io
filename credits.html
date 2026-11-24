@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <link rel="icon" type="image/svg+xml" href="SKY Studio.svg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鸣谢 — SKY Studio</title>
+  <meta name="description" content="SKY Studio 鸣谢页：致谢 TurboWarp、Scratch 及 scratch-gui / scratch-vm 等上游开源项目与国内 Scratch Mod 社区。">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sky: { light: '#E6EEFF', DEFAULT: '#84A9FF', dark: '#3B7BFF', darker: '#1E5BFF' }
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root { --brand: #1E5BFF; --header-h: 84px; --page-bg: #F0F5FF; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--page-bg); color: #374151; }
+    main { padding-top: var(--header-h); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+    .page-hero { padding: 68px 0 30px; text-align: center; }
+    .eyebrow {
+      display: inline-block; margin-bottom: 14px; padding: 5px 14px; border-radius: 999px;
+      background: #fff; border: 1px solid #E6EEFF; color: var(--brand);
+      font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    }
+    .page-hero h1 {
+      font-size: clamp(1.9rem, 4.4vw, 2.6rem); font-weight: 800; color: #0F172A;
+      letter-spacing: -.02em; line-height: 1.2; margin: 0;
+    }
+    .page-hero p.lead {
+      max-width: 620px; margin: 16px auto 0; color: #6B7280;
+      font-size: 1rem; line-height: 1.8;
+    }
+    .sec { padding: 26px 0 10px; }
+    .sec-title { text-align: center; font-size: 1.375rem; font-weight: 700; color: #111827; margin: 0 0 6px; }
+    .sec-sub { text-align: center; color: #94A3B8; font-size: .875rem; margin: 0 0 26px; }
+    .card-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 768px) { .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .card-grid.three { }
+    @media (min-width: 900px) { .card-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    .card {
+      background: #fff; border: 1px solid #E6EEFF; border-radius: 16px; padding: 22px 24px;
+      box-shadow: 0 8px 24px rgba(15, 35, 95, .05); transition: transform .25s ease, box-shadow .25s ease;
+      text-align: left;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(30, 91, 255, .12); }
+    .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .card-ico {
+      flex: 0 0 38px; width: 38px; height: 38px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      background: #E6EEFF; color: var(--brand); font-size: 1rem;
+    }
+    .card h3 { margin: 0; font-size: 1rem; font-weight: 700; color: #111827; }
+    .card .meta { font-size: .75rem; color: #94A3B8; margin-top: 2px; }
+    .card p { margin: 0; font-size: .875rem; line-height: 1.75; color: #6B7280; }
+    .card .card-link {
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
+      font-size: .8125rem; font-weight: 600; color: var(--brand); text-decoration: none;
+    }
+    .card .card-link:hover { text-decoration: underline; }
+    .note {
+      background: #fff; border: 1px dashed #C9DAFF; border-radius: 16px;
+      padding: 20px 24px; text-align: center; color: #6B7280; font-size: .875rem; line-height: 1.85;
+    }
+    .note strong { color: #111827; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 26px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: .7rem 1.5rem; border-radius: 999px;
+      font-size: .875rem; font-weight: 600; text-decoration: none; transition: all .25s ease;
+    }
+    .btn-primary { background: var(--brand); color: #fff; box-shadow: 0 10px 26px rgba(30, 91, 255, .28); }
+    .btn-primary:hover { background: #1447D4; box-shadow: 0 14px 32px rgba(30, 91, 255, .34); }
+    .btn-ghost { background: #fff; color: #374151; border: 1px solid #DCE6FA; }
+    .btn-ghost:hover { color: var(--brand); border-color: #B9CDFF; }
+    .divider { max-width: 960px; margin: 34px auto 0; height: 1px; background: linear-gradient(90deg, transparent, #D9E3FA, transparent); }
+    .tail { padding: 30px 0 60px; }
+
+
+    /* ================= 统一顶栏 v2（三列网格 · 居中 LOGO · 产品下拉） ================= */
+        .site-header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 50;
+      height: var(--header-h);
+      background: transparent;
+      -webkit-backdrop-filter: none; backdrop-filter: none;
+      border-bottom: 1px solid transparent;
+      box-shadow: 0 2px 18px rgba(15, 35, 95, 0);
+      transition: background .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+    .site-header.is-scrolled {
+      background: rgba(255, 255, 255, .82);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border-bottom-color: rgba(30, 91, 255, .08);
+      box-shadow: 0 2px 18px rgba(15, 35, 95, .07);
+    }
+    .header-inner {
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+      column-gap: 10px; max-width: 1152px; margin: 0 auto; padding: 0 16px;
+      height: 100%;
+    }
+    .nav-group { display: none; align-items: center; }
+    .nav-group-left { grid-column: 1; justify-self: end; }
+    .nav-group-right { grid-column: 3; justify-self: start; }
+    .brand-logo { grid-column: 2; justify-self: center; display: flex; align-items: center; justify-content: center; }
+    .brand-logo img { width: 48px; height: 48px; display: block; }
+    @media (max-width: 900px) { .header-inner { padding: 0 14px; } }
+    @media (min-width: 768px) { .nav-group { display: flex; } }
+
+    .site-header .nav-item {
+      position: relative; padding: .5rem .9rem; color: #374151; font-weight: 500;
+      font-size: .9375rem; white-space: nowrap; transition: color .2s ease;
+      background: none; border: 0; cursor: pointer; font-family: inherit;
+    }
+    .site-header .nav-item::after {
+      content: ''; position: absolute; left: .9rem; right: .9rem; bottom: .1rem;
+      height: 2px; background: var(--brand); border-radius: 2px;
+      transform: scaleX(0); transform-origin: center; transition: transform .3s ease;
+    }
+    .site-header .nav-item:hover { color: var(--brand); }
+    .site-header .nav-item:hover::after { transform: scaleX(1); }
+    .site-header .nav-item.nav-current { color: var(--brand); font-weight: 600; }
+    .site-header .nav-item.nav-current::after { transform: scaleX(1); }
+    .drop-caret { margin-left: .3rem; font-size: .75rem; transition: transform .2s ease; }
+    .nav-drop.open .drop-caret { transform: rotate(180deg); }
+
+    /* 产品下拉面板（自定义，非原生 select） */
+    .nav-drop { position: relative; display: flex; align-items: center; }
+    .drop-panel {
+      position: absolute; top: calc(100% + 12px); left: 50%;
+      min-width: 328px; padding: 8px;
+      background: rgba(255, 255, 255, .97);
+      -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+      border: 1px solid rgba(30, 91, 255, .12); border-radius: 16px;
+      box-shadow: 0 20px 44px rgba(15, 35, 95, .14), 0 2px 8px rgba(15, 35, 95, .05);
+      opacity: 0; visibility: hidden; transform: translate(-50%, -8px);
+      transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+      z-index: 60;
+    }
+    .nav-drop.open .drop-panel { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    /* 按钮与下拉面板之间保持连续热区：视觉间距保留，热区不断开 */
+    .drop-panel::before {
+      content: ''; position: absolute; left: 0; right: 0; top: -14px; height: 14px;
+      background: transparent; pointer-events: auto;
+    }
+    .drop-item {
+      display: flex; align-items: flex-start; gap: .75rem;
+      padding: .6rem .7rem; border-radius: 12px; text-decoration: none;
+      transition: background .18s ease;
+    }
+    .drop-item:hover { background: #F0F5FF; }
+    .drop-ico {
+      flex: 0 0 34px; width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: #E6EEFF; color: var(--brand); font-size: .95rem;
+    }
+    .drop-name { display: block; font-size: .9rem; font-weight: 600; color: #111827; line-height: 1.25; }
+    .drop-desc { display: block; font-size: .75rem; color: #8A94A6; line-height: 1.4; margin-top: 2px; }
+    .drop-item:hover .drop-name { color: var(--brand); }
+    .drop-sep { height: 1px; margin: 6px 10px; background: #EDF1FA; }
+    .drop-item.drop-home .drop-name { color: #6B7280; font-weight: 500; }
+
+    /* 移动端 */
+    .menu-btn {
+      grid-column: 3; justify-self: end; color: #374151; background: none; border: 0;
+      padding: 6px 8px; cursor: pointer;
+    }
+    .mobile-menu { background: #fff; border-top: 1px solid #EDF1FA; }
+    .mobile-menu a, .mobile-menu .m-sub {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem 1rem; border-radius: .5rem; color: #374151;
+      font-size: .9375rem; text-decoration: none; transition: background .18s ease, color .18s ease;
+      background: none; border: 0; width: 100%; text-align: left; font-family: inherit; cursor: pointer;
+    }
+    .mobile-menu a:hover, .mobile-menu .m-sub:hover { background: #F0F5FF; color: var(--brand); }
+    .mobile-menu a.nav-current { color: var(--brand); font-weight: 600; background: #F0F5FF; }
+    .m-sub-panel { padding: 2px 0 6px 12px; }
+    .m-sub-panel a { font-size: .875rem; color: #5B6472; padding: .6rem 1rem; }
+    .m-sep { height: 1px; margin: 6px 12px; background: #EDF1FA; }
+
+    /* ================= 统一页尾（居中五栏 + 三段版权） ================= */
+    .site-footer { background: #111827; color: rgba(255, 255, 255, .68); padding: 52px 0 30px; }
+    .footer-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 30px 14px; text-align: center; justify-items: center;
+    }
+    @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px 12px; } }
+    .footer-col { width: 100%; text-align: center; }
+    .footer-col h4 {
+      color: #fff; font-size: .875rem; font-weight: 600; margin: 0 0 12px; letter-spacing: .02em;
+    }
+    .footer-col ul { list-style: none; margin: 0; padding: 0; }
+    .footer-col li { line-height: 1; }
+    .footer-col a, .footer-col span.footer-soon {
+      display: inline-block; padding: .3rem 0; font-size: .8125rem;
+      color: rgba(255, 255, 255, .6); text-decoration: none; transition: color .2s ease;
+    }
+    .footer-col a:hover { color: #fff; }
+    .footer-col span.footer-soon { color: rgba(255, 255, 255, .26); }
+    .footer-copy {
+      margin-top: 34px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, .1);
+      text-align: center; font-size: .8125rem; line-height: 1.95; color: rgba(255, 255, 255, .34);
+    }
+    .footer-copy p { margin: 0; }
+    .footer-copy p.footer-slogan { color: rgba(255, 255, 255, .5); letter-spacing: .08em; }
+
+  </style>
+</head>
+<body class="font-sans min-h-screen">
+  <!-- ==================== 顶栏（全站统一 · 三段式居中） ==================== -->
+  <header id="siteHeader" class="site-header">
+    <div class="header-inner">
+      <nav class="nav-group nav-group-left" aria-label="主导航">
+        <a href="index.html" class="nav-item">首页</a>
+        <div class="nav-drop" id="productDrop">
+          <button type="button" id="productBtn" class="nav-item" aria-haspopup="true" aria-expanded="false">产品<i class="fa fa-angle-down drop-caret"></i></button>
+          <div class="drop-panel" role="menu" aria-label="产品列表">
+            <a class="drop-item" href="SKY Systems.html" role="menuitem">
+              <span class="drop-ico"><i class="fa fa-cubes"></i></span>
+              <span><span class="drop-name">SKY Systems</span><span class="drop-desc">SKY OS（PC）与 SKY UI（移动端）的合称</span></span>
+            </a>
+            <a class="drop-item" href="SKY IDE.html" role="menuitem">
+              <span class="drop-ico"><i class="fa fa-code"></i></span>
+              <span><span class="drop-name">SKY IDE</span><span class="drop-desc">面向 SKY 生态的集成开发环境，编写、运行、调试、打包一体</span></span>
+            </a>
+            <a class="drop-item" href="https://sky-editor.github.io/" role="menuitem">
+              <span class="drop-ico"><i class="fa fa-pencil-square-o"></i></span>
+              <span><span class="drop-name">SKYEditor</span><span class="drop-desc">基于 TurboWarp 的国内 Scratch Mod 编辑器</span></span>
+            </a>
+          </div>
+        </div>
+        <a href="credits.html" class="nav-item nav-current">鸣谢</a>
+      </nav>
+
+      <a href="index.html" class="brand-logo" aria-label="SKY Studio">
+        <img src="SKY Studio.svg" alt="SKY Studio" width="48" height="48">
+      </a>
+
+      <nav class="nav-group nav-group-right" aria-label="次级导航">
+        <a href="about.html" class="nav-item">关于</a>
+        <a href="download.html" class="nav-item">下载</a>
+        <a href="repos.html" class="nav-item">仓库</a>
+      </nav>
+
+      <button id="menuBtn" class="menu-btn md:hidden" aria-label="菜单" aria-expanded="false">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="mobile-menu md:hidden hidden">
+      <div class="mx-auto max-w-6xl px-4 py-2 flex flex-col">
+        <a href="index.html" class="nav-current">首页</a>
+        <button type="button" id="mProductBtn" class="m-sub" aria-expanded="false">
+          <span>产品</span><i class="fa fa-angle-down"></i>
+        </button>
+        <div id="mProductPanel" class="m-sub-panel hidden">
+        <a href="SKY Systems.html"><span><i class="fa fa-cubes" style="width:1.2em;color:#8A94A6"></i> SKY Systems</span></a>
+        <a href="SKY IDE.html"><span><i class="fa fa-code" style="width:1.2em;color:#8A94A6"></i> SKY IDE</span></a>
+        <a href="https://sky-editor.github.io/"><span><i class="fa fa-pencil-square-o" style="width:1.2em;color:#8A94A6"></i> SKYEditor</span></a>
+        </div>
+        <a href="credits.html" nav-current>鸣谢</a>
+        <div class="m-sep"></div>
+        <a href="about.html">关于</a>
+        <a href="download.html">下载</a>
+        <a href="repos.html">仓库</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow">Acknowledgements</span>
+        <h1>鸣谢</h1>
+        <p class="lead">SKYEditor 与 SKY Studio 产品矩阵的每一行代码，都站在开源社区的肩膀上。以下项目与组织是我们必须致谢的基础。</p>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap">
+        <h2 class="sec-title">上游项目</h2>
+        <p class="sec-sub">SKYEditor 的编辑器内核、运行环境与界面层来源</p>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-ico"><i class="fa fa-bolt"></i></span>
+              <div><h3>TurboWarp</h3><div class="meta">GarboMuffin · GPL-3.0</div></div>
+            </div>
+            <p>基于 Scratch 的开源编辑器项目。SKYEditor 的编辑器内核、编译器与运行优化直接源自 TurboWarp，全部衍生代码依据 GPL-3.0 许可发布。</p>
+            <a class="card-link" href="https://github.com/TurboWarp" target="_blank" rel="noopener">github.com/TurboWarp <i class="fa fa-external-link"></i></a>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-ico"><i class="fa fa-puzzle-piece"></i></span>
+              <div><h3>Scratch</h3><div class="meta">MIT Media Lab · Lifelong Kindergarten Group</div></div>
+            </div>
+            <p>由 MIT Media Lab 的 Lifelong Kindergarten Group 发起的图形化编程平台，也是整个 Scratch Mod 生态的源头。所有改版编辑器都建立在它的积木语义与作品格式之上。</p>
+            <a class="card-link" href="https://scratch.mit.edu" target="_blank" rel="noopener">scratch.mit.edu <i class="fa fa-external-link"></i></a>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-ico"><i class="fa fa-window-maximize"></i></span>
+              <div><h3>scratch-gui</h3><div class="meta">Scratch 官方开源仓库</div></div>
+            </div>
+            <p>Scratch 编辑器的界面层实现，负责舞台、积木区与菜单等交互外壳。TurboWarp 与 SKYEditor 的界面均建立在其之上。</p>
+            <a class="card-link" href="https://github.com/scratchfoundation/scratch-gui" target="_blank" rel="noopener">scratchfoundation/scratch-gui <i class="fa fa-external-link"></i></a>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-ico"><i class="fa fa-cogs"></i></span>
+              <div><h3>scratch-vm</h3><div class="meta">Scratch 官方开源仓库</div></div>
+            </div>
+            <p>Scratch 虚拟机的参考实现，负责积木的解析、执行与渲染调度，是编辑器能够真正运行作品的核心。</p>
+            <a class="card-link" href="https://github.com/scratchfoundation/scratch-vm" target="_blank" rel="noopener">scratchfoundation/scratch-vm <i class="fa fa-external-link"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="sec">
+      <div class="wrap">
+        <h2 class="sec-title">开源生态与构建依赖</h2>
+        <p class="sec-sub">让作品能走出浏览器、变成独立文件的工具链</p>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-ico"><i class="fa fa-cube"></i></span>
+              <div><h3>TurboWarp Packager</h3><div class="meta">TurboWarp · GPL-3.0</div></div>
+            </div>
+            <p>把 Scratch 项目打包为可独立分发文件的构建工具。SKYEditor 的发布流程沿用了它的打包思路与运行环境约定。</p>
+            <a class="card-link" href="https://github.com/TurboWarp/packager" target="_blank" rel="noopener">TurboWarp/packager <i class="fa fa-external-link"></i></a>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-ico"><i class="fa fa-balance-scale"></i></span>
+              <div><h3>GPL-3.0 许可生态</h3><div class="meta">GNU General Public License v3.0</div></div>
+            </div>
+            <p>SKYEditor 依据 GPL-3.0 在 TurboWarp 基础上构建，对应的衍生代码同样以 GPL-3.0 对外发布，源码可自由获取、修改与再分发。</p>
+            <a class="card-link" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener">GNU GPL-3.0 <i class="fa fa-external-link"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="sec tail">
+      <div class="wrap">
+        <h2 class="sec-title">还有你们</h2>
+        <p class="sec-sub">生态里每一位扩展作者、作品创作者与内测用户</p>
+        <div class="note">
+          <p><strong>同样感谢国内 Scratch Mod 社区的扩展作者与作品创作者。</strong><br>
+          你们贡献的积木、素材与作品，让 SKYEditor 的扩展生态从"能用"变成"好用"；也感谢参与内测的同学，每一条反馈都直接改变了产品的形状。</p>
+          <p style="margin-top:12px">本页仅列出可公开核实的项目与组织事实，不涉及未公开的合作或个人。若署名有误或需要补充，欢迎通过
+          <a href="https://github.com/SKY-Studio-cn/issues" target="_blank" rel="noopener" style="color:#1E5BFF;font-weight:600">GitHub Issues</a> 与我们联系。</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="about.html"><i class="fa fa-info-circle"></i> 了解 SKY Studio</a>
+          <a class="btn btn-ghost" href="https://github.com/SKY-Studio-cn" target="_blank" rel="noopener"><i class="fa fa-github"></i> 查看开源仓库</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== 页尾（居中五栏 + 三段版权） ==================== -->
+  <footer id="siteFooter" class="site-footer">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>产品</h4>
+          <ul>
+            <li><a href="SKY Systems.html">SKY Systems</a></li>
+            <li><a href="SKY IDE.html">SKY IDE</a></li>
+            <li><a href="https://sky-editor.github.io/">SKYEditor</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>资源</h4>
+          <ul>
+            <li><a href="repos.html">项目文档</a></li>
+            <li><a href="download.html">下载中心</a></li>
+            <li><a href="https://github.com/SKY-Studio-cn">开源仓库</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>更多</h4>
+          <ul>
+            <li><a href="https://github.com/SKY-Studio-cn">社区</a></li>
+            <li><a href="https://sky-editor.github.io/beta.html">内测申请</a></li>
+            <li><a href="credits.html">鸣谢</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>法律</h4>
+          <ul>
+            <li><span class="footer-soon">隐私政策（即将发布）</span></li>
+            <li><span class="footer-soon">服务条款（即将发布）</span></li>
+            <li><a href="https://github.com/SKY-Studio-cn/SKY-UI/blob/main/SKYUI%E5%BC%80%E5%8F%91%E8%80%85%E5%8D%8F%E8%AE%AE%EF%BC%88%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%EF%BC%89.md">开发者协议</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>关于</h4>
+          <ul>
+            <li><a href="about.html">关于我们</a></li>
+            <li><a href="https://github.com/SKY-Studio-cn">加入我们</a></li>
+            <li><a href="https://github.com/SKY-Studio-cn/issues">联系我们</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-copy">
+        <p class="footer-slogan">愿此行，终抵群星</p>
+        <p>&copy; SKY Studio. All rights reserved.</p>
+        <p>SKYEditor 基于 TurboWarp（GPL-3.0）构建，非 Scratch 官方产品。</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ================= 统一顶栏交互（下拉 / 移动菜单 / 锚点） ================= */
+    (function () {
+      var menuBtn = document.getElementById('menuBtn');
+      var mobileMenu = document.getElementById('mobileMenu');
+      function icon(open) {
+        if (!menuBtn) return;
+        var i = menuBtn.querySelector('i');
+        if (!i) return;
+        i.classList.add(open ? 'fa-times' : 'fa-bars');
+        i.classList.remove(open ? 'fa-bars' : 'fa-times');
+      }
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', function () {
+          var wasOpen = !mobileMenu.classList.contains('hidden');
+          mobileMenu.classList.toggle('hidden');
+          menuBtn.setAttribute('aria-expanded', wasOpen ? 'false' : 'true');
+          icon(!wasOpen);
+        });
+        mobileMenu.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function () {
+            mobileMenu.classList.add('hidden');
+            menuBtn.setAttribute('aria-expanded', 'false');
+            icon(false);
+          });
+        });
+      }
+      var drop = document.getElementById('productDrop');
+      var dropBtn = document.getElementById('productBtn');
+      if (drop && dropBtn) {
+        var closeTimer = null;
+        function cancelClose() { if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; } }
+        function closeDrop() { cancelClose(); drop.classList.remove('open'); dropBtn.setAttribute('aria-expanded', 'false'); }
+        function openDrop() { cancelClose(); drop.classList.add('open'); dropBtn.setAttribute('aria-expanded', 'true'); }
+        function scheduleClose() { cancelClose(); closeTimer = setTimeout(closeDrop, 120); }
+        dropBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          drop.classList.contains('open') ? closeDrop() : openDrop();
+        });
+        dropBtn.addEventListener('mouseenter', openDrop);
+        dropBtn.addEventListener('focus', openDrop);
+        drop.addEventListener('mouseenter', openDrop);
+        drop.addEventListener('mouseleave', scheduleClose);
+        document.addEventListener('click', function (e) { if (!drop.contains(e.target)) closeDrop(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.keyCode === 27) closeDrop(); });
+      }
+      var mProdBtn = document.getElementById('mProductBtn');
+      var mProdPanel = document.getElementById('mProductPanel');
+      if (mProdBtn && mProdPanel) {
+        mProdBtn.addEventListener('click', function () {
+          mProdPanel.classList.toggle('hidden');
+          mProdBtn.setAttribute('aria-expanded', mProdPanel.classList.contains('hidden') ? 'false' : 'true');
+        });
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var href = this.getAttribute('href');
+          if (!href || href === '#') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+          var t = document.querySelector(href);
+          if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+        });
+      });
+    })();
+    /* ================= 顶栏滚动背板：顶部贴合背景，下滚超过 8px 才出现背板 ================= */
+    (function () {
+      var header = document.getElementById('siteHeader');
+      if (!header) return;
+      var ticking = false;
+      function sync() {
+        ticking = false;
+        var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+        if (y > 8) header.classList.add('is-scrolled');
+        else header.classList.remove('is-scrolled');
+      }
+      function onScroll() { if (!ticking) { ticking = true; window.requestAnimationFrame(sync); } }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      sync();
+    })();
+  </script>
+
+</body>
+</html>

@@ -72,71 +72,226 @@
     }
 
     /* 导航 */
+  
+    /* ================= 全站统一顶栏（SKY Studio） ================= */
+    :root { --brand: #1E5BFF; --header-h: 84px; }
     .nav-item {
       position: relative;
-      padding: 0.5rem 1rem;
+      padding: .5rem 1rem;
       color: #374151;
       font-weight: 500;
-      transition: color 0.2s;
-      text-decoration: none;
+      white-space: nowrap;
+      transition: color .2s ease;
     }
-    .nav-item:hover { color: #1E5BFF; }
     .nav-item::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
+      left: 1rem; right: 1rem; bottom: 0;
       height: 2px;
-      width: 0;
-      background: #1E5BFF;
-      transition: all 0.3s;
+      background: var(--brand);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
     }
-    .nav-item:hover::after { width: 100%; }
-  </style>
+    .nav-item:hover { color: var(--brand); }
+    .nav-item:hover::after { transform: scaleX(1); }
+    .nav-item.nav-current { color: var(--brand); font-weight: 600; }
+    .nav-item.nav-current::after { transform: scaleX(1); }
+    @media (max-width: 900px) {
+      :root { --header-h: 72px; }
+    }
+
+    /* 顶栏 fixed 后为内容预留高度 */
+    main { padding-top: var(--header-h); }
+  
+    /* ================= 统一顶栏 v2（三列网格 · 居中 LOGO · 产品下拉） ================= */
+        .site-header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 50;
+      height: var(--header-h);
+      background: transparent;
+      -webkit-backdrop-filter: none; backdrop-filter: none;
+      border-bottom: 1px solid transparent;
+      box-shadow: 0 2px 18px rgba(15, 35, 95, 0);
+      transition: background .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+    .site-header.is-scrolled {
+      background: rgba(255, 255, 255, .82);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border-bottom-color: rgba(30, 91, 255, .08);
+      box-shadow: 0 2px 18px rgba(15, 35, 95, .07);
+    }
+    .header-inner {
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+      column-gap: 10px; max-width: 1152px; margin: 0 auto; padding: 0 16px;
+      height: 100%;
+    }
+    .nav-group { display: none; align-items: center; }
+    .nav-group-left { grid-column: 1; justify-self: end; }
+    .nav-group-right { grid-column: 3; justify-self: start; }
+    .brand-logo { grid-column: 2; justify-self: center; display: flex; align-items: center; justify-content: center; }
+    .brand-logo img { width: 48px; height: 48px; display: block; }
+    @media (max-width: 900px) { .header-inner { padding: 0 14px; } }
+    @media (min-width: 768px) { .nav-group { display: flex; } }
+
+    .site-header .nav-item {
+      position: relative; padding: .5rem .9rem; color: #374151; font-weight: 500;
+      font-size: .9375rem; white-space: nowrap; transition: color .2s ease;
+      background: none; border: 0; cursor: pointer; font-family: inherit;
+    }
+    .site-header .nav-item::after {
+      content: ''; position: absolute; left: .9rem; right: .9rem; bottom: .1rem;
+      height: 2px; background: var(--brand); border-radius: 2px;
+      transform: scaleX(0); transform-origin: center; transition: transform .3s ease;
+    }
+    .site-header .nav-item:hover { color: var(--brand); }
+    .site-header .nav-item:hover::after { transform: scaleX(1); }
+    .site-header .nav-item.nav-current { color: var(--brand); font-weight: 600; }
+    .site-header .nav-item.nav-current::after { transform: scaleX(1); }
+    .drop-caret { margin-left: .3rem; font-size: .75rem; transition: transform .2s ease; }
+    .nav-drop.open .drop-caret { transform: rotate(180deg); }
+
+    /* 产品下拉面板（自定义，非原生 select） */
+    .nav-drop { position: relative; display: flex; align-items: center; }
+    .drop-panel {
+      position: absolute; top: calc(100% + 12px); left: 50%;
+      min-width: 328px; padding: 8px;
+      background: rgba(255, 255, 255, .97);
+      -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+      border: 1px solid rgba(30, 91, 255, .12); border-radius: 16px;
+      box-shadow: 0 20px 44px rgba(15, 35, 95, .14), 0 2px 8px rgba(15, 35, 95, .05);
+      opacity: 0; visibility: hidden; transform: translate(-50%, -8px);
+      transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+      z-index: 60;
+    }
+    .nav-drop.open .drop-panel { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    /* 按钮与下拉面板之间保持连续热区：视觉间距保留，热区不断开 */
+    .drop-panel::before {
+      content: ''; position: absolute; left: 0; right: 0; top: -14px; height: 14px;
+      background: transparent; pointer-events: auto;
+    }
+    .drop-item {
+      display: flex; align-items: flex-start; gap: .75rem;
+      padding: .6rem .7rem; border-radius: 12px; text-decoration: none;
+      transition: background .18s ease;
+    }
+    .drop-item:hover { background: #F0F5FF; }
+    .drop-ico {
+      flex: 0 0 34px; width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: #E6EEFF; color: var(--brand); font-size: .95rem;
+    }
+    .drop-name { display: block; font-size: .9rem; font-weight: 600; color: #111827; line-height: 1.25; }
+    .drop-desc { display: block; font-size: .75rem; color: #8A94A6; line-height: 1.4; margin-top: 2px; }
+    .drop-item:hover .drop-name { color: var(--brand); }
+    .drop-sep { height: 1px; margin: 6px 10px; background: #EDF1FA; }
+    .drop-item.drop-home .drop-name { color: #6B7280; font-weight: 500; }
+
+    /* 移动端 */
+    .menu-btn {
+      grid-column: 3; justify-self: end; color: #374151; background: none; border: 0;
+      padding: 6px 8px; cursor: pointer;
+    }
+    .mobile-menu { background: #fff; border-top: 1px solid #EDF1FA; }
+    .mobile-menu a, .mobile-menu .m-sub {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem 1rem; border-radius: .5rem; color: #374151;
+      font-size: .9375rem; text-decoration: none; transition: background .18s ease, color .18s ease;
+      background: none; border: 0; width: 100%; text-align: left; font-family: inherit; cursor: pointer;
+    }
+    .mobile-menu a:hover, .mobile-menu .m-sub:hover { background: #F0F5FF; color: var(--brand); }
+    .mobile-menu a.nav-current { color: var(--brand); font-weight: 600; background: #F0F5FF; }
+    .m-sub-panel { padding: 2px 0 6px 12px; }
+    .m-sub-panel a { font-size: .875rem; color: #5B6472; padding: .6rem 1rem; }
+    .m-sep { height: 1px; margin: 6px 12px; background: #EDF1FA; }
+
+    /* ================= 统一页尾（居中五栏 + 三段版权） ================= */
+    .site-footer { background: #111827; color: rgba(255, 255, 255, .68); padding: 52px 0 30px; }
+    .footer-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 30px 14px; text-align: center; justify-items: center;
+    }
+    @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px 12px; } }
+    .footer-col { width: 100%; text-align: center; }
+    .footer-col h4 {
+      color: #fff; font-size: .875rem; font-weight: 600; margin: 0 0 12px; letter-spacing: .02em;
+    }
+    .footer-col ul { list-style: none; margin: 0; padding: 0; }
+    .footer-col li { line-height: 1; }
+    .footer-col a, .footer-col span.footer-soon {
+      display: inline-block; padding: .3rem 0; font-size: .8125rem;
+      color: rgba(255, 255, 255, .6); text-decoration: none; transition: color .2s ease;
+    }
+    .footer-col a:hover { color: #fff; }
+    .footer-col span.footer-soon { color: rgba(255, 255, 255, .26); }
+    .footer-copy {
+      margin-top: 34px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, .1);
+      text-align: center; font-size: .8125rem; line-height: 1.95; color: rgba(255, 255, 255, .34);
+    }
+    .footer-copy p { margin: 0; }
+    .footer-copy p.footer-slogan { color: rgba(255, 255, 255, .5); letter-spacing: .08em; }
+</style>
 </head>
 
 <body class="font-sans text-gray-800 min-h-screen">
 
   <!-- ==================== 导航栏（三段式） ==================== -->
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
-    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-
-      <!-- 左导航 -->
-      <nav class="hidden md:flex items-center space-x-2">
+    <!-- ==================== 顶栏（全站统一 · SKY Studio） ==================== -->
+    <!-- ==================== 顶栏（全站统一 · 三段式居中） ==================== -->
+  <header id="siteHeader" class="site-header">
+    <div class="header-inner">
+      <nav class="nav-group nav-group-left" aria-label="主导航">
         <a href="index.html" class="nav-item">首页</a>
-        <a href="index.html#features" class="nav-item">特性</a>
-        <a href="index.html#products" class="nav-item">产品</a>
+        <div class="nav-drop" id="productDrop">
+          <button type="button" id="productBtn" class="nav-item" aria-haspopup="true" aria-expanded="false">产品<i class="fa fa-angle-down drop-caret"></i></button>
+          <div class="drop-panel" role="menu" aria-label="产品列表">
+            <a class="drop-item" href="SKY Systems.html" role="menuitem">
+              <span class="drop-ico"><i class="fa fa-cubes"></i></span>
+              <span><span class="drop-name">SKY Systems</span><span class="drop-desc">SKY OS（PC）与 SKY UI（移动端）的合称</span></span>
+            </a>
+            <a class="drop-item" href="SKY IDE.html" role="menuitem">
+              <span class="drop-ico"><i class="fa fa-code"></i></span>
+              <span><span class="drop-name">SKY IDE</span><span class="drop-desc">面向 SKY 生态的集成开发环境，编写、运行、调试、打包一体</span></span>
+            </a>
+            <a class="drop-item" href="https://sky-editor.github.io/" role="menuitem">
+              <span class="drop-ico"><i class="fa fa-pencil-square-o"></i></span>
+              <span><span class="drop-name">SKYEditor</span><span class="drop-desc">基于 TurboWarp 的国内 Scratch Mod 编辑器</span></span>
+            </a>
+          </div>
+        </div>
+        <a href="credits.html" class="nav-item">鸣谢</a>
       </nav>
 
-      <!-- 中 Logo -->
-      <div class="flex items-center">
-        <a href="index.html" class="w-12 h-12 rounded-full">
-          <div class="w-15 h-15 relative">
-            <img src="SKY Studio.svg" alt="LOGO">
-          </div>
-        </a>
-      </div>
+      <a href="index.html" class="brand-logo" aria-label="SKY Studio">
+        <img src="SKY Studio.svg" alt="SKY Studio" width="48" height="48">
+      </a>
 
-      <!-- 右导航 -->
-      <nav class="hidden md:flex items-center space-x-2">
-        <a href="index.html#tools" class="nav-item">工具</a>
-        <a href="download.html" class="nav-item text-sky-darker after:bg-sky-darker after:w-full font-semibold">下载</a>
+      <nav class="nav-group nav-group-right" aria-label="次级导航">
+        <a href="about.html" class="nav-item">关于</a>
+        <a href="download.html" class="nav-item nav-current">下载</a>
         <a href="repos.html" class="nav-item">仓库</a>
       </nav>
 
-      <button id="menuBtn" class="md:hidden text-gray-700 focus:outline-none">
+      <button id="menuBtn" class="menu-btn md:hidden" aria-label="菜单" aria-expanded="false">
         <i class="fa fa-bars text-xl"></i>
       </button>
     </div>
 
-    <div id="mobileMenu" class="md:hidden hidden bg-white border-t border-gray-100">
-      <div class="container mx-auto px-4 py-2 flex flex-col space-y-1">
-        <a href="index.html" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">首页</a>
-        <a href="index.html#features" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">特性</a>
-        <a href="index.html#products" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">产品</a>
-        <a href="index.html#tools" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">工具</a>
-        <a href="download.html" class="py-3 px-4 bg-sky-light rounded-md transition-colors font-medium">下载</a>
-        <a href="repos.html" class="py-3 px-4 hover:bg-sky-light rounded-md transition-colors">仓库</a>
+    <div id="mobileMenu" class="mobile-menu md:hidden hidden">
+      <div class="mx-auto max-w-6xl px-4 py-2 flex flex-col">
+        <a href="index.html" class="nav-current">首页</a>
+        <button type="button" id="mProductBtn" class="m-sub" aria-expanded="false">
+          <span>产品</span><i class="fa fa-angle-down"></i>
+        </button>
+        <div id="mProductPanel" class="m-sub-panel hidden">
+        <a href="SKY Systems.html"><span><i class="fa fa-cubes" style="width:1.2em;color:#8A94A6"></i> SKY Systems</span></a>
+        <a href="SKY IDE.html"><span><i class="fa fa-code" style="width:1.2em;color:#8A94A6"></i> SKY IDE</span></a>
+        <a href="https://sky-editor.github.io/"><span><i class="fa fa-pencil-square-o" style="width:1.2em;color:#8A94A6"></i> SKYEditor</span></a>
+        </div>
+        <a href="credits.html">鸣谢</a>
+        <div class="m-sep"></div>
+        <a href="about.html">关于</a>
+        <a href="download.html" nav-current>下载</a>
+        <a href="repos.html">仓库</a>
       </div>
     </div>
   </header>
@@ -179,16 +334,16 @@
               </div>
 
               <p class="text-gray-500 text-sm mb-2 max-w-md leading-relaxed">
-                包含 SKY OS/UI、SKYEditor、SKY Code 以及全套开发者工具链。一站式安装，开箱即用。
+                包含 SKY Systems、SKYEditor、SKY IDE 与全套开发者工具链：一次安装，桌面、编辑器与语言环境同时到位。
               </p>
               <p class="text-gray-400 text-xs mb-8 max-w-md">
-                Includes all SKY Studio products and developer tools. One-click install, ready to build.
+                Every SKY Studio product plus the full developer toolchain&mdash;one install, ready to build.
               </p>
 
               <ul class="text-left text-sm text-gray-600 space-y-2 mb-8">
                 <li class="flex items-start gap-2">
                   <i class="fa fa-check-circle text-sky-darker mt-0.5"></i>
-                  <span>SKY OS/UI v1.8.2 — 桌面操作系统与用户界面</span>
+                  <span>SKY Systems — SKY OS（PC）与 SKY UI（移动端）的合称</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <i class="fa fa-check-circle text-sky-darker mt-0.5"></i>
@@ -196,7 +351,7 @@
                 </li>
                 <li class="flex items-start gap-2">
                   <i class="fa fa-check-circle text-sky-darker mt-0.5"></i>
-                  <span>SKY Code v2.0.5 — 仿 Python 语法编程语言</span>
+                  <span>SKY IDE v2.0.5 — 面向 SKY 生态的集成开发环境</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <i class="fa fa-check-circle text-sky-darker mt-0.5"></i>
@@ -227,15 +382,15 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- SKY OS/UI -->
+            <!-- SKY Systems -->
             <div class="card-hover bg-sky-light/30 rounded-2xl p-6 text-center animate-fadeUp animate-fadeUp-2">
               <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-sky-darker/10 flex items-center justify-center">
                 <i class="fa fa-desktop text-sky-darker text-2xl"></i>
               </div>
-              <h3 class="text-lg font-semibold text-gray-800 mb-1">SKY OS/UI</h3>
+              <h3 class="text-lg font-semibold text-gray-800 mb-1"><a href="SKY Systems.html" class="hover:text-sky-darker transition-colors">SKY Systems</a></h3>
               <p class="text-gray-400 text-sm mb-1">Operating System &amp; UI</p>
-              <p class="text-sky-darker text-sm font-medium mb-4">v1.8.2</p>
-              <p class="text-gray-500 text-sm mb-5 leading-relaxed">基于 TurboWarp 构建的桌面操作系统与用户界面，提供直观流畅的交互体验。</p>
+              <p class="text-sky-darker text-sm font-medium mb-4">SKY OS v1.8.2</p>
+              <p class="text-gray-500 text-sm mb-5 leading-relaxed">SKY Systems 是 SKY OS 与 SKY UI 的合称：前者是面向 PC 的操作系统，后者是面向移动端的操作系统。</p>
               <a href="https://1814163603.share.123pan.cn/123pan/fedbVv-HYR5" class="btn-glow-outline w-full px-6 py-3 border-2 border-sky-darker/20 text-sky-darker hover:border-sky-darker hover:bg-sky-light/50 rounded-xl font-semibold text-sm inline-flex items-center justify-center gap-2">
                 <i class="fa fa-download"></i> 下载 Download
               </a>
@@ -246,7 +401,7 @@
               <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-sky-darker/10 flex items-center justify-center">
                 <i class="fa fa-cogs text-sky-darker text-2xl"></i>
               </div>
-              <h3 class="text-lg font-semibold text-gray-800 mb-1">SKYEditor</h3>
+              <h3 class="text-lg font-semibold text-gray-800 mb-1"><a href="https://sky-editor.github.io/" target="_blank" rel="noopener" class="hover:text-sky-darker transition-colors">SKYEditor</a></h3>
               <p class="text-gray-400 text-sm mb-1">Editor &amp; Interpreter</p>
               <p class="text-sky-darker text-sm font-medium mb-4">v3.2.1</p>
               <p class="text-gray-500 text-sm mb-5 leading-relaxed">TurboWarp 深度定制版编辑器与解释器，专为 SKY 生态优化。</p>
@@ -255,15 +410,15 @@
               </a>
             </div>
 
-            <!-- SKY Code -->
+            <!-- SKY IDE -->
             <div class="card-hover bg-sky-light/30 rounded-2xl p-6 text-center animate-fadeUp animate-fadeUp-4">
               <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-sky-darker/10 flex items-center justify-center">
                 <i class="fa fa-code text-sky-darker text-2xl"></i>
               </div>
-              <h3 class="text-lg font-semibold text-gray-800 mb-1">SKY Code</h3>
-              <p class="text-gray-400 text-sm mb-1">Programming Language</p>
+              <h3 class="text-lg font-semibold text-gray-800 mb-1"><a href="SKY IDE.html" class="hover:text-sky-darker transition-colors">SKY IDE</a></h3>
+              <p class="text-gray-400 text-sm mb-1">Integrated Development Environment</p>
               <p class="text-sky-darker text-sm font-medium mb-4">v2.0.5</p>
-              <p class="text-gray-500 text-sm mb-5 leading-relaxed">仿 Python 语法的专属编程语言，简洁优雅，专为 SKY 生态设计。</p>
+              <p class="text-gray-500 text-sm mb-5 leading-relaxed">面向 SKY 生态的集成开发环境，语法干净，标准库齐全。</p>
               <a href="https://1814163603.share.123pan.cn/123pan/fedbVv-HYR5" class="btn-glow-outline w-full px-6 py-3 border-2 border-sky-darker/20 text-sky-darker hover:border-sky-darker hover:bg-sky-light/50 rounded-xl font-semibold text-sm inline-flex items-center justify-center gap-2">
                 <i class="fa fa-download"></i> 下载 Download
               </a>
@@ -289,86 +444,141 @@
   </main>
 
   <!-- ==================== 页脚 ==================== -->
-  <footer class="bg-gray-900 text-white/70 py-10">
-    <div class="container mx-auto px-4">
-      <div class="max-w-5xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <h4 class="text-white font-semibold mb-4 text-sm">产品 Products</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#" class="hover:text-white transition-colors">SKY OS/UI</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">SKYEditor</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">SKY Code</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-white font-semibold mb-4 text-sm">资源 Resources</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#" class="hover:text-white transition-colors">文档</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">教程</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">社区</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-white font-semibold mb-4 text-sm">法律 Legal</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#" class="hover:text-white transition-colors">隐私政策</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">服务条款</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">开发者协议</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-white font-semibold mb-4 text-sm">关于 About</h4>
-            <ul class="space-y-2 text-sm">
-              <li><a href="#" class="hover:text-white transition-colors">关于我们</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">加入我们</a></li>
-              <li><a href="#" class="hover:text-white transition-colors">联系我们</a></li>
-            </ul>
-          </div>
+    <!-- ==================== 页尾（居中五栏 + 三段版权） ==================== -->
+  <footer id="siteFooter" class="site-footer">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>产品</h4>
+          <ul>
+            <li><a href="SKY Systems.html">SKY Systems</a></li>
+            <li><a href="SKY IDE.html">SKY IDE</a></li>
+            <li><a href="https://sky-editor.github.io/">SKYEditor</a></li>
+          </ul>
         </div>
-
-        <div class="pt-8 border-t border-gray-800 text-center text-sm text-white/30">
-          <p>&copy; 2025 SKY Studio. All rights reserved.</p>
+        <div class="footer-col">
+          <h4>资源</h4>
+          <ul>
+            <li><a href="repos.html">项目文档</a></li>
+            <li><a href="download.html">下载中心</a></li>
+            <li><a href="https://github.com/SKY-Studio-cn">开源仓库</a></li>
+          </ul>
         </div>
+        <div class="footer-col">
+          <h4>更多</h4>
+          <ul>
+            <li><a href="https://github.com/SKY-Studio-cn">社区</a></li>
+            <li><a href="https://sky-editor.github.io/beta.html">内测申请</a></li>
+            <li><a href="credits.html">鸣谢</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>法律</h4>
+          <ul>
+            <li><span class="footer-soon">隐私政策（即将发布）</span></li>
+            <li><span class="footer-soon">服务条款（即将发布）</span></li>
+            <li><a href="https://github.com/SKY-Studio-cn/SKY-UI/blob/main/SKYUI%E5%BC%80%E5%8F%91%E8%80%85%E5%8D%8F%E8%AE%AE%EF%BC%88%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%EF%BC%89.md">开发者协议</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>关于</h4>
+          <ul>
+            <li><a href="about.html">关于我们</a></li>
+            <li><a href="https://github.com/SKY-Studio-cn">加入我们</a></li>
+            <li><a href="https://github.com/SKY-Studio-cn/issues">联系我们</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-copy">
+        <p class="footer-slogan">愿此行，终抵群星</p>
+        <p>&copy; SKY Studio. All rights reserved.</p>
+        <p>SKYEditor 基于 TurboWarp（GPL-3.0）构建，非 Scratch 官方产品。</p>
       </div>
     </div>
   </footer>
 
   <!-- ==================== JavaScript ==================== -->
+
   <script>
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-      const icon = menuBtn.querySelector('i');
-      if (icon.classList.contains('fa-bars')) {
-        icon.classList.replace('fa-bars', 'fa-times');
-      } else {
-        icon.classList.replace('fa-times', 'fa-bars');
+    /* ================= 统一顶栏交互（下拉 / 移动菜单 / 锚点） ================= */
+    (function () {
+      var menuBtn = document.getElementById('menuBtn');
+      var mobileMenu = document.getElementById('mobileMenu');
+      function icon(open) {
+        if (!menuBtn) return;
+        var i = menuBtn.querySelector('i');
+        if (!i) return;
+        i.classList.add(open ? 'fa-times' : 'fa-bars');
+        i.classList.remove(open ? 'fa-bars' : 'fa-times');
       }
-    });
-
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-        menuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', function () {
+          var wasOpen = !mobileMenu.classList.contains('hidden');
+          mobileMenu.classList.toggle('hidden');
+          menuBtn.setAttribute('aria-expanded', wasOpen ? 'false' : 'true');
+          icon(!wasOpen);
+        });
+        mobileMenu.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function () {
+            mobileMenu.classList.add('hidden');
+            menuBtn.setAttribute('aria-expanded', 'false');
+            icon(false);
+          });
+        });
+      }
+      var drop = document.getElementById('productDrop');
+      var dropBtn = document.getElementById('productBtn');
+      if (drop && dropBtn) {
+        var closeTimer = null;
+        function cancelClose() { if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; } }
+        function closeDrop() { cancelClose(); drop.classList.remove('open'); dropBtn.setAttribute('aria-expanded', 'false'); }
+        function openDrop() { cancelClose(); drop.classList.add('open'); dropBtn.setAttribute('aria-expanded', 'true'); }
+        function scheduleClose() { cancelClose(); closeTimer = setTimeout(closeDrop, 120); }
+        dropBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          drop.classList.contains('open') ? closeDrop() : openDrop();
+        });
+        dropBtn.addEventListener('mouseenter', openDrop);
+        dropBtn.addEventListener('focus', openDrop);
+        drop.addEventListener('mouseenter', openDrop);
+        drop.addEventListener('mouseleave', scheduleClose);
+        document.addEventListener('click', function (e) { if (!drop.contains(e.target)) closeDrop(); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.keyCode === 27) closeDrop(); });
+      }
+      var mProdBtn = document.getElementById('mProductBtn');
+      var mProdPanel = document.getElementById('mProductPanel');
+      if (mProdBtn && mProdPanel) {
+        mProdBtn.addEventListener('click', function () {
+          mProdPanel.classList.toggle('hidden');
+          mProdBtn.setAttribute('aria-expanded', mProdPanel.classList.contains('hidden') ? 'false' : 'true');
+        });
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var href = this.getAttribute('href');
+          if (!href || href === '#') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+          var t = document.querySelector(href);
+          if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+        });
       });
-    });
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (!mobileMenu.classList.contains('hidden')) {
-          mobileMenu.classList.add('hidden');
-          menuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
-        }
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
+    })();
+    /* ================= 顶栏滚动背板：顶部贴合背景，下滚超过 8px 才出现背板 ================= */
+    (function () {
+      var header = document.getElementById('siteHeader');
+      if (!header) return;
+      var ticking = false;
+      function sync() {
+        ticking = false;
+        var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+        if (y > 8) header.classList.add('is-scrolled');
+        else header.classList.remove('is-scrolled');
+      }
+      function onScroll() { if (!ticking) { ticking = true; window.requestAnimationFrame(sync); } }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      sync();
+    })();
   </script>
+
 </body>
 </html>
